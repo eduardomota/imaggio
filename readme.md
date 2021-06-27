@@ -1,6 +1,6 @@
 # Imaggio
 
-![Imaggio app](https://github.com/eduardomota/imaggio/raw/master/screenshot.png)  
+![Imaggio app](https://github.com/eduardomota/imaggio/main/screenshot.png)  
 
 Imaggio is an open source, windows desktop application built on Electron. Handles conversion, compression, slice and dice in multiple ways with PDFs in mind. If you ever thought about the privacy and data security concerns regarding use of online converters, wonder no more, Imaggio does all the PDF slice and dice locally. This is meant to be a simple intuitive application for any user.
 
