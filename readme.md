@@ -12,7 +12,7 @@ Imaggio is a standalone application that only requires Microsoft Office for "doc
 
 ## Notes on binaries
 
-The included binaries have been UPX (--ultra-brute) compressed for managebility. If that does not suit your use case for some specific reason there are mirror repositories of these binaries on github.
+The included binaries have been UPX (--ultra-brute) compressed for manageability. If that does not suit your use case for some specific reason there are mirror repositories of these binaries on github.
 
 ## Features
 
