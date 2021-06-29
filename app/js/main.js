@@ -152,7 +152,7 @@ ipcMain.on('convertpdf:input.folder', function(event) {
   let fileList = fs.readdirSync(folder);
   let numFiles = fileList.length;
 
-  fileList.forEach(function (filename, i) {
+  fileList.forEach(function(filename, i) {
     var filePath = folder + '\\' + filename;
     var progress = (i + 1) + '/' + numFiles;
     console.log(filePath);
@@ -248,6 +248,9 @@ function convertPdf(file, event, isMassFileConvert = false) {
 function getOptions() {
   var options;
   switch (mainOptions.conversionType) {
+    /*
+      PDF 2 JPEG
+     */
     case 'pdf2jpeglow':
       options = {
         format: 'jpeg',
@@ -266,6 +269,10 @@ function getOptions() {
         scaleTo: '8000'
       };
       break;
+
+      /*
+        PDF 2 PNG
+       */
     case 'pdf2pnglow':
       options = {
         format: 'png',
@@ -284,11 +291,64 @@ function getOptions() {
         scaleTo: '8000'
       };
       break;
+
+      /*
+       PDF 2 SVG
+       */
     case 'pdf2svg':
       options = {
         format: 'svg'
       };
       break;
+
+      /*
+        PDF 2 TIFF
+       */
+    case 'pdf2tifflow':
+      options = {
+        format: 'tiff',
+        scaleTo: '2000'
+      };
+      break;
+    case 'pdf2tiffmedium':
+      options = {
+        format: 'tiff',
+        scaleTo: '4000'
+      };
+      break;
+    case 'pdf2tiffhigh':
+      options = {
+        format: 'tiff',
+        scaleTo: '8000'
+      };
+      break;
+
+      /*
+        PDF 2 PPM
+       */
+    case 'pdf2ppmlow':
+      options = {
+        format: 'ppm',
+        scaleTo: '2000'
+      };
+      break;
+    case 'pdf2ppmmedium':
+      options = {
+        format: 'ppm',
+        scaleTo: '4000'
+      };
+      break;
+    case 'pdf2ppmhigh':
+      options = {
+        format: 'ppm',
+        scaleTo: '8000'
+      };
+      break;
+
+
+      /*
+        PDF COMPRESS
+       */
     case 'pdf2pdflow':
       options = {
         format: 'pdf',
@@ -307,21 +367,46 @@ function getOptions() {
         pdfSettings: 'printer'
       };
       break;
+
+      /*
+        PDF SPLIT
+       */
     case 'pdf2split':
       options = {
         format: 'separate'
       };
       break;
+
+      /*
+        PDF EXTRACT
+       */
     case 'pdf2extract':
       options = {
         format: 'extract'
       };
       break;
+
+      /*
+        PDF DETACH
+       */
+    case 'pdf2detach':
+      options = {
+        format: 'detach'
+      };
+      break;
+
+      /*
+        PDF 2 TXT
+       */
     case 'pdf2txt':
       options = {
         format: 'txt'
       };
       break;
+
+      /*
+        PDF 2 PDFA
+       */
     case 'pdf2pdfa':
       options = {
         format: 'pdfa'
@@ -345,6 +430,10 @@ function getOptions() {
         format: 'pdfa'
       };
       break;
+
+      /*
+        PDF STAMP
+       */
     case 'pdfstamp1':
       options = {
         format: 'pdf',
@@ -352,6 +441,10 @@ function getOptions() {
         type: '1'
       };
       break;
+
+      /*
+        DOC 2 PDF
+       */
     case 'doc2pdf':
       options = {
         format: 'pdf',

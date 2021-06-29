@@ -40,6 +40,7 @@ function compileExecutablePath(options) {
   if (types.cairo.includes(options.format)) executable = 'pdftocairo';
   if (types.text.includes(options.format)) executable = 'pdftotext';
   if (types.html.includes(options.format)) executable = 'pdftothtml';
+  if (types.ppm.includes(options.format)) executable = 'pdftoppm';
   if (types.extract.includes(options.format)) executable = 'pdfimages';
   if (types.separate.includes(options.format)) executable = 'pdfseparate';
   if (types.detach.includes(options.format)) executable = 'pdfdetach';
@@ -78,7 +79,7 @@ function compileArguments(file, options) {
     types
   } = popplerVars;
 
-  if (types.cairo.includes(options.format)) arguments.push(`-${options.format}`); // Format
+  if (types.cairo.includes(options.format) || types.ppm.includes(options.format)) arguments.push(`-${options.format}`); // Format
   if (options.firstPage) {
     arguments.push(`-f`);
     arguments.push(`${parseInt(options.firstPage)}`);
@@ -108,7 +109,7 @@ function compileArguments(file, options) {
   if (options.format === 'detach') arguments.push(`-saveall`);
 
   arguments.push(`${file}`);
-  
+
   if (options.format === 'separate') arguments.push(`${path.join(options.outputDirectory, options.outputFile)}_%d.pdf`);
   if (options.format === 'extract') {
     arguments.push(`-png`);
@@ -201,6 +202,7 @@ function getPopplerVarsDefaultOptions() {
 function getPopplerVarsDefaultTypes() {
   return types = {
     cairo: ['png', 'jpeg', 'tiff', 'svg', 'pdf', 'ps', 'eps'],
+    ppm: ['ppm'],
     text: ['txt', 'text'],
     html: ['html'],
     extract: ['extract'],
