@@ -42,6 +42,7 @@ function compileExecutablePath(options) {
   if (types.html.includes(options.format)) executable = 'pdftothtml';
   if (types.extract.includes(options.format)) executable = 'pdfimages';
   if (types.separate.includes(options.format)) executable = 'pdfseparate';
+  if (types.detach.includes(options.format)) executable = 'pdfdetach';
 
   return path.join(popplerVars.path, executable);
 }
@@ -104,7 +105,10 @@ function compileArguments(file, options) {
   if (options.format === 'svg') outputFile = outputFile + '.svg';
   if (options.format === 'txt') outputFile = outputFile + '.txt';
 
+  if (options.format === 'detach') arguments.push(`-saveall`);
+
   arguments.push(`${file}`);
+  
   if (options.format === 'separate') arguments.push(`${path.join(options.outputDirectory, options.outputFile)}_%d.pdf`);
   if (options.format === 'extract') {
     arguments.push(`-png`);
@@ -200,7 +204,8 @@ function getPopplerVarsDefaultTypes() {
     text: ['txt', 'text'],
     html: ['html'],
     extract: ['extract'],
-    separate: ['separate']
+    separate: ['separate'],
+    detach: ['detach']
   };
 }
 
@@ -209,7 +214,7 @@ function getPopplerVarsDefaultTypes() {
     Gets default poppler excluded formats to exclude -format from command line
  */
 function getPopplerVarsExcludedFormats() {
-  return ['extract', 'separate', 'html'];
+  return ['extract', 'separate', 'html', 'detach'];
 }
 
 module.exports = {

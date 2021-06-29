@@ -24,13 +24,14 @@
             <select id="selectedAction">
               <option value="null">Select action</option>
 
-              <option class="separator" value="null" disabled>+ PDF TO IMAGE</option>
+              <option class="separator" value="null" disabled>+ PDF TO IMAGE/GRAPHIC</option>
               <option value="pdf2jpeglow">PDF to JPEG low (1 image per page)</option>
               <option value="pdf2jpegmedium">PDF to JPEG medium (1 image per page)</option>
               <option value="pdf2jpeghigh">PDF to JPEG high (1 image per page)</option>
               <option value="pdf2pnglow">PDF to PNG low (1 image per page)</option>
               <option value="pdf2pngmedium">PDF to PNG medium (1 image per page)</option>
               <option value="pdf2pnghigh">PDF to PNG high (1 image per page)</option>
+              <option value="pdf2svg">PDF to SVG (1 vector per document)</option>
 
               <option class="separator" value="null" disabled>+ DOCUMENT TO PDF</option>
               <option value="doc2pdf">Word (doc, docx, rtf, ...) to PDF</option>
@@ -40,17 +41,19 @@
               <option value="doc2pdf">Outlook (msg, vcf, ics) to PDF</option>
               <option value="doc2pdf">Project (mpp) to PDF</option>
               <option value="doc2pdf">OpenOffice (odt, odp, ods) to PDF</option>
-              <!--<option value="pdf2svg">PDF para SVG (1 vector por documento)</option>-->
 
               <option class="separator" value="null" disabled>+ PDF COMPRESSION</option>
               <option value="pdf2pdflow">Compress PDF (low quality)</option>
               <option value="pdf2pdfmedium">Compress PDF (medium quality)</option>
               <option value="pdf2pdfhigh">Compress PDF (high quality)</option>
 
-              <option class="separator" value="null" disabled>+ MISC</option>
-              <option value="pdf2split">Split PDF (1 PDF per page)</option>
+              <option class="separator" value="null" disabled>+ PDF EXTRACTION</option>
               <option value="pdf2extract">Extract images from PDF (1 file per image)</option>
               <option value="pdf2txt">Extract text from PDF (txt format)</option>
+
+              <option class="separator" value="null" disabled>+ MISC</option>
+              <option value="pdf2split">Split PDF (1 PDF per page)</option>
+              <option value="pdf2detach">Detach/Save all embeded files in a PDF</option>
               <!--<option value="pdfstamp1">Embed watermark/stamp PDF (45º/grey)</option>-->
 
               <option class="separator" value="null" disabled>+ PDF TO PDF/A</option>
