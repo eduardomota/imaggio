@@ -328,8 +328,7 @@ function getOptions() {
        */
     case 'pdf2ppmlow':
       options = {
-        format: 'ppm',
-        scaleTo: '2000'
+        format: 'ppm'
       };
       break;
     case 'pdf2ppmmedium':

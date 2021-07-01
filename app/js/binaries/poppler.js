@@ -79,7 +79,7 @@ function compileArguments(file, options) {
     types
   } = popplerVars;
 
-  if (types.cairo.includes(options.format) || types.ppm.includes(options.format)) arguments.push(`-${options.format}`); // Format
+  if (types.cairo.includes(options.format)) arguments.push(`-${options.format}`); // Format
   if (options.firstPage) {
     arguments.push(`-f`);
     arguments.push(`${parseInt(options.firstPage)}`);
@@ -102,9 +102,9 @@ function compileArguments(file, options) {
   } // Scale to
   if (options.grayscale) arguments.push(`-gray`);
   if (options.nativeimages) arguments.push(`-all`);
-  if (options.format === 'pdf') outputFile = outputFile + '_min.pdf';
-  if (options.format === 'svg') outputFile = outputFile + '.svg';
-  if (options.format === 'txt') outputFile = outputFile + '.txt';
+  if (options.format === 'pdf') outputFile = `${outputFile}_min.pdf`;
+  if (options.format === 'svg') outputFile = `${outputFile}.svg`;
+  if (options.format === 'txt') outputFile = `${outputFile}.txt`;
 
   if (options.format === 'detach') arguments.push(`-saveall`);
 
