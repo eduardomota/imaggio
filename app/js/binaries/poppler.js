@@ -5,6 +5,9 @@ const {
   execFile
 } = require('child_process');
 
+// dosPath conversion
+const dosPath = require('./dospath');
+
 // Startup routine
 startupCheckOs();
 var popplerVars = getPopplerVars();
@@ -21,8 +24,6 @@ function convertPdfFile(file, options) {
       executionOptions
     } = popplerVars;
 
-    console.log(arguments);
-
     currentExec = execFile(executable, arguments, executionOptions, (error, stdout, stderr) => {
       if (error) reject(error);
       resolve(stdout);
@@ -36,14 +37,41 @@ function convertPdfFile(file, options) {
  */
 function compileExecutablePath(options) {
   var executable = null;
+  var {
+    cairo,
+    text,
+    html,
+    ppm,
+    extract,
+    separate,
+    detach
+  } = types;
 
-  if (types.cairo.includes(options.format)) executable = 'pdftocairo';
-  if (types.text.includes(options.format)) executable = 'pdftotext';
-  if (types.html.includes(options.format)) executable = 'pdftothtml';
-  if (types.ppm.includes(options.format)) executable = 'pdftoppm';
-  if (types.extract.includes(options.format)) executable = 'pdfimages';
-  if (types.separate.includes(options.format)) executable = 'pdfseparate';
-  if (types.detach.includes(options.format)) executable = 'pdfdetach';
+  switch (options.format) {
+    case cairo:
+      executable = 'pdftocairo';
+      break;
+    case text:
+      executable = 'pdftotext';
+      break;
+    case html:
+      executable = 'pdftothtml';
+      break;
+    case ppm:
+      executable = 'pdftoppm';
+      break;
+    case extract:
+      executable = 'pdfimages';
+      break;
+    case separate:
+      executable = 'pdfseparate';
+      break;
+    case detach:
+      executable = 'pdfdetach';
+      break;
+    default:
+      executable = 'pdftocairo';
+  }
 
   return path.join(popplerVars.path, executable);
 }
@@ -68,10 +96,12 @@ options = {
 }
 */
 function compileArguments(file, options) {
+  var outputDir = path.dirname(file);
   var options = { ...options,
-    outputDirectory: options.outputDirectory ? options.outputDirectory : path.dirname(file),
+    outputDirectory: options.outputDirectory ? options.outputDirectory : outputDir,
     outputFile: options.outputFile ? options.outputFile : path.basename(file, path.extname(file))
   };
+  console.log(outputDir);
   var arguments = [],
     outputFile = path.join(options.outputDirectory, options.outputFile);
   var {
