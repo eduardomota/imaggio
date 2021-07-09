@@ -4,7 +4,7 @@
 
 Imaggio is an open source, windows desktop application built on Electron. Handles conversion, compression, slice and dice in multiple ways with PDFs in mind. If you ever thought about the privacy and data security concerns regarding use of online converters, wonder no more, Imaggio does all the PDF slice and dice locally. This is meant to be a simple intuitive application for any user.
 
-This application is basically a GUI for several different binaries that interact with PDF files, these binaries are `Ghostscript`, `ImageMagick`, `OfficeToPdf`, `Poppler`, `qpdf`, `pandoc` and `exiftool`. They're not all in use but they maybe used in some way in the future and thats why they're there.
+This application is basically a GUI for several different binaries that interact with PDF files, these binaries are `Ghostscript`, `ImageMagick`, `OfficeToPdf`, `Poppler`, `qpdf`, `pandoc` and `exiftool`. They're not all in use but they maybe used in some way in the future and that's why they're there.
 
 ## Requirements
 
@@ -31,24 +31,30 @@ The included binaries have been UPX (--ultra-brute) compressed for manageability
 - Extract text from PDF, .txt format
 - Convert to PDF/A
 - Compress and convert to PDF/A (3 options)
+- Metadata (remove or clone from one to another)
 
 ### Planned features
 
 - Customizable PDF stamping
+- Join PDF files
 
 ### Features QA
 
 Q: Can i change the output filename or folder?
-A: No, it's not planned to be allowed changes to the output in any way.
+
+A: No, it's not planned to be allowed changes to the output in any way. Output files are default defined and won't be changed.
 
 Q: Will you support Linux and MacOS?
-A: No, i won't be making Linux or MacOS supported, however you're free to contribute to this compatibility if you wish to.
 
-Q: Can i convert 1 million files (or humongous quantity of files)?
-A: You can but i wouldnt recommend, this converter runs sequentially so it will probably take a long time.
+A: No, i won't support Linux or MacOS, however you're free to contribute a port to these OSes.
+
+Q: Can i convert [insert humongous number] files?
+
+A: You can but i wouldn't recommend, this converter runs sequentially so it will probably take a long time. I'd use this for a simple workflow of upwards of 5000 files or so.
 
 Q: Can I get fine tuning options?
-A: No, this tool is meant for general, fast use, major use case scenarios, if you want fine tuning you'll have to use the original binaries and their command line parameters.
+
+A: No, this tool is meant for general, fast, major use case scenarios, if you want fine tuning you'll have to use the original binaries and their command line parameters.
 
 ## Quick Start
 
@@ -56,7 +62,7 @@ Stay on the bleeding edge of imaggio commits using `git clone` or for slightly t
 
 ### File output
 
-Files used in the application will not be modified, the output files will have "min", a number or the file extension appended so you're able to distinguish from the original file. Along with that you're able to distinguish also from the modification date with list view.
+Files used in the application will not be modified, the output files will have `min` or number to indicate and distinguish the file as well as `jpg` or whatever extension is appropriate to the chosen option. Along with that you're able to distinguish these processed files by looking at the modification date with explorer's list view.
 
 ### Latest built binary
 
