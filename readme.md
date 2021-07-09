@@ -4,7 +4,7 @@
 
 Imaggio is an open source, windows desktop application built on Electron. Handles conversion, compression, slice and dice in multiple ways with PDFs in mind. If you ever thought about the privacy and data security concerns regarding use of online converters, wonder no more, Imaggio does all the PDF slice and dice locally. This is meant to be a simple intuitive application for any user.
 
-This application is basically a GUI for several different binaries that interact with PDF files, these binaries are `Ghostscript`, `ImageMagick`, `OfficeToPdf`, `Poppler`, `qpdf` and `pandoc`. They're not all in use but they maybe used in some way in the future and thats why they're there.
+This application is basically a GUI for several different binaries that interact with PDF files, these binaries are `Ghostscript`, `ImageMagick`, `OfficeToPdf`, `Poppler`, `qpdf`, `pandoc` and `exiftool`. They're not all in use but they maybe used in some way in the future and thats why they're there.
 
 ## Requirements
 
