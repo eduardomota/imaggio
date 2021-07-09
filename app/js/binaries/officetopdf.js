@@ -18,8 +18,6 @@ function convertPdfFile(file, options) {
     var executable = compileExecutablePath(options),
       arguments = compileArguments(file, options);
 
-    console.log(arguments);
-
     currentExec = execFile(executable, arguments, (error, stdout, stderr) => {
       if (error) reject(error);
       resolve(stdout);
@@ -32,8 +30,10 @@ function convertPdfFile(file, options) {
     Compile executable path
  */
 function compileExecutablePath(options) {
-  var executable = 'officetopdf';
-  return path.join(officetopdfVars.path, executable);
+  var executableName = 'officetopdf';
+  var executable = path.join(officetopdfVars.path, executableName)
+
+  return executable;
 }
 
 /*
@@ -50,18 +50,11 @@ function compileArguments(file, options) {
   var arguments = [],
     outputFile = path.join(options.outputDirectory, options.outputFile);
 
-  // Add bookmarks when possible
-  arguments.push(`/bookmarks`);
-
-  // Make it print ready
-  arguments.push(`/print`);
-
-  // Try to hide Office application
-  arguments.push(`/bookmarks`);
-
-  arguments.push(`${file}`);
-
-  arguments.push(`${outputFile}.pdf`);
+  arguments.push(`/bookmarks`);   // Add bookmarks when possible
+  arguments.push(`/print`); // Make it print ready
+  arguments.push(`/hidden`);  // Try to hide Office application
+  arguments.push(`${file}`); // Input file
+  arguments.push(`${outputFile}.pdf`); // Output file (pdf file)
 
   return arguments;
 }
