@@ -1,27 +1,11 @@
-<style>
-  .separator {
-    font-weight: 500;
-  }
-  .extended2 {
-    margin-top: 5px;
-    margin-bottom: 10px;
-  }
-  input[type="checkbox"] { /* change "blue" browser chrome to yellow */
-  font-size: 1rem;
-  padding: 10px;
-  transform: scale(1.5);
-  margin: 3px;
-}
-
-</style>
 <div class="columns">
-  <div id="p2Intro" class="">
-    <div class="column">
+  <div id="Start">
+    <div id="StepOne" class="column">
       <div class="field">
-        <label class="label">1. Select action</label>
+        <label id="S1Label" class="label">1. Select action</label>
         <div class="control">
           <div class="select">
-            <select id="selectedAction">
+            <select id="SOSelect">
               <option value="null">Select action</option>
 
               <option class="separator" value="null" disabled>+ PDF TO IMAGE/GRAPHIC</option>
@@ -59,53 +43,67 @@
               <option value="pdf2extract">Extract images from PDF (1 file per image)</option>
               <option value="pdf2txt">Extract text from PDF (txt format)</option>
 
+              <option class="separator" value="null" disabled>+ METADATA</option>
+              <option value="pdfmetaremove">Remove all metadata</option>
+              <option value="pdfmetaclone">Clone all metadata</option>
+
               <option class="separator" value="null" disabled>+ MISC</option>
+              <option value="pdf2pdfa">Convert to PDF/A</option>
               <option value="pdf2split">Split PDF (1 PDF per page)</option>
               <option value="pdf2detach">Detach/Save all embeded files in a PDF</option>
               <!--<option value="pdfstamp1">Embed watermark/stamp PDF (45º/grey)</option>-->
 
               <option class="separator" value="null" disabled>+ PDF TO PDF/A</option>
-              <option value="pdf2pdfa">Convert to PDF/A</option>
               <option value="pdf2pdfalow">Compress and convert to PDF/A (low quality)</option>
               <option value="pdf2pdfamedium">Compress and convert to PDF/A (medium quality)</option>
               <option value="pdf2pdfahigh">Compress and convert to PDF/A (high quality)</option>
             </select>
           </div>
         </div>
-        <label class="checkbox extended2">
-          <input type="checkbox" id="processfoldertickbox">
-          Process folder
+        <label class="checkbox extended2" id="SOProcessFolderContainer">
+          <input type="checkbox" id="SOProcessFolderTickbox"> Process folder
         </label>
       </div>
     </div>
-    <div class="column">
-      <label class="label" id="selectlabel">2. Select file</label>
-      <a id="p2ButtonFile" class="button is-large box-shadow-5">
-        <span class="icon is-large">
-          <i class="fas fa-folder-open"></i>
-        </span>
-        <span id="openbutton">Select file</span>
-      </a>
+    <div id="StepTwo">
+      <div id="S2One" class="column">
+        <label id="S2OneLabel" class="label">2. Select file</label>
+        <a id="S2OneButton" class="button is-large box-shadow-5">
+          <span class="icon is-large">
+            <i class="fas fa-folder-open"></i>
+          </span>
+          <span id="S2OneButtonLabel">Select file</span>
+        </a>
+      </div>
+      <div id="S2Two" class="p2TextOr">
+        OR
+      </div>
+      <div id="S2Three" class="column">
+        <a id="S2ThreeButton" class="button is-large box-shadow-5">
+          <span id="S2ThreeButtonLabel">Drag file here</span>
+          <span class="icon is-large">
+            <i class="fas fa-file-import"></i>
+          </span>
+        </a>
+      </div>
     </div>
-    <div class="p2TextOr">
-      OR
-    </div>
-    <div class="column">
-      <a id="p2ButtonDragndrop" class="button is-large box-shadow-5">
-        <span id="dragbutton">Drag file here</span>
+    <div id="StepThree" class="column is-hidden">
+      <label id="S3Label" class="label">3. Select target file</label>
+      <a id="S3Button" class="button is-large box-shadow-5">
         <span class="icon is-large">
-          <i class="fas fa-file-import"></i>
+          <i class="fas fa-file"></i>
         </span>
+        <span id="S3ButtonLabel">Select file</span>
       </a>
     </div>
   </div>
-  <div id="p2Converting" class="is-hidden">
+  <div id="Conversion" class="is-hidden">
     <div class="column">
-      <button id="p2ConvertingButton" class="button is-medium box-shadow-5 no-borders">
+      <button id="CButton" class="button is-medium box-shadow-5 no-borders">
         <span class="icon">
           <i class="fas fa-file-export"></i>
         </span>
-        <span>Converting file...</span>
+        <span>Processing file...</span>
       </button>
     </div>
     <!--
@@ -119,34 +117,34 @@
     </div>
     -->
   </div>
-  <div id="p2ConvertingMass" class="is-hidden">
+  <div id="MassProcessing" class="is-hidden">
     <div class="column">
-      <button id="p2ConvertingButton" class="button is-medium box-shadow-5 no-borders">
+      <button id="MPButton" class="button is-medium box-shadow-5 no-borders">
         <span class="icon">
           <i class="fas fa-file-export"></i>
         </span>
-        <span>Converting files...</span>
-        <span id="massfileProg"></span>
+        <span>Processing files...</span>
+        <span id="MPLabel"></span>
       </button>
     </div>
   </div>
-  <div id="p2Converted" class="is-hidden">
+  <div id="ProcessingFinished" class="is-hidden">
     <div class="column">
-      <button class="button is-success is-medium box-shadow-5">
+      <button id="PFButton" class="button is-success is-medium box-shadow-5">
         <span class="icon">
           <i class="fas fa-check"></i>
         </span>
-        <span>Conversion finished</span>
+        <span>Processing finished</span>
       </button>
     </div>
   </div>
-  <div id="p2Failed" class="is-hidden">
+  <div id="ProcessingFailed" class="is-hidden">
     <div class="column">
-      <button class="button is-danger is-medium box-shadow-5">
+      <button id="PFaButton" class="button is-danger is-medium box-shadow-5">
         <span class="icon">
           <i class="fas fa-times"></i>
         </span>
-        <span>Error converting</span>
+        <span>Error processing</span>
       </button>
     </div>
   </div>
