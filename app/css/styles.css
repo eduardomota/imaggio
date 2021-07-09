@@ -2,10 +2,6 @@
   margin-left: 0;
 }
 
-.p2jTextOr {
-  margin-top: auto;
-}
-
 .logo-text {
   font-size: larger;
   color: #000;
@@ -51,4 +47,44 @@ html {
 
 .is-hidden {
   display: none;
+}
+
+.separator {
+  font-weight: 500;
+}
+
+.extended2 {
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+input[type="checkbox"] {
+  font-size: 1rem;
+  padding: 10px;
+  transform: scale(1.5);
+  margin: 3px;
+}
+
+#SOProcessFolderContainer {
+  user-select: none;
+}
+
+#SOSelect {
+  user-select: none;
+}
+
+#S2Two {
+  user-select: none;
+}
+
+#S1Label {
+  user-select: none;
+}
+
+#S2OneLabel {
+  user-select: none;
+}
+
+#S3Label {
+  user-select: none;
 }

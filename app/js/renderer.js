@@ -20,7 +20,6 @@ updateOptions();
     Updates options on main
  */
 function updateOptions() {
-  console.log(options);
   ipcRenderer.send('convertpdf:updateoptions', options);
 }
 
@@ -30,8 +29,8 @@ $(document).ready(() => {
   /*
     Open file/folder button
    */
-  $('#p2ButtonFile').click(function() {
-    if ($('#processfoldertickbox').is(':checked')) {
+  $('#S2OneButton').click(function() {
+    if ($('#SOProcessFolderTickbox').is(':checked')) {
       ipcRenderer.send('convertpdf:input.folder');
     } else {
       ipcRenderer.send('convertpdf:input.file');
@@ -50,15 +49,17 @@ $(document).ready(() => {
   /*
     Process folder tickbox
    */
-  $('#processfoldertickbox').click(function() {
+  $('#SOProcessFolderTickbox').click(function() {
+    if (options.conversionType === 'pdfmetaclone') return;
+
     if ($(this).is(':checked')) {
-      $('#openbutton').text('Select folder');
-      $('#dragbutton').text('Drag folder here');
-      $('#selectlabel').text('2. Select folder');
+      $('#S2OneButtonLabel').text('Select folder');
+      $('#S2ThreeButtonLabel').text('Drag folder here');
+      $('#S2OneLabel').text('2. Select folder');
     } else {
-      $('#openbutton').text('Select file');
-      $('#dragbutton').text('Drag file here');
-      $('#selectlabel').text('2. Select file');
+      $('#S2OneButtonLabel').text('Select file');
+      $('#S2ThreeButtonLabel').text('Drag file here');
+      $('#S2OneLabel').text('2. Select file');
     }
   });
 
@@ -66,8 +67,8 @@ $(document).ready(() => {
     Converting file
    */
   ipcRenderer.on('convertpdf:input.file.converting', function(event) {
-    $('#p2Intro').addClass('is-hidden');
-    $('#p2Converting').removeClass('is-hidden');
+    $('#Start').addClass('is-hidden');
+    $('#Processing').removeClass('is-hidden');
     return;
   });
 
@@ -75,9 +76,9 @@ $(document).ready(() => {
     Converting files within folder
    */
   ipcRenderer.on('convertpdf:input.folder.converting', function(event, progress) {
-    $('#p2Intro').addClass('is-hidden');
-    $('#p2ConvertingMass').removeClass('is-hidden');
-    $('#massfileProg').text(progress);
+    $('#Start').addClass('is-hidden');
+    $('#MassProcessing').removeClass('is-hidden');
+    $('#MPLabel').text(progress);
     return;
   });
 
@@ -85,15 +86,15 @@ $(document).ready(() => {
     On file conversion success
    */
   ipcRenderer.on('convertpdf:input.file.success', function(event) {
-    if ($('#processfoldertickbox').is(':checked')) {
-      $('#p2ConvertingMass').addClass('is-hidden');
+    if ($('#SOProcessFolderTickbox').is(':checked')) {
+      $('#MassProcessing').addClass('is-hidden');
     } else {
-      $('#p2Converting').addClass('is-hidden');
+      $('#Processing').addClass('is-hidden');
     }
-    $('#p2Intro').removeClass('is-hidden');
-    $('#p2Converted').removeClass('is-hidden');
+    $('#Start').removeClass('is-hidden');
+    $('#ProcessingFinished').removeClass('is-hidden');
     setTimeout(() => {
-      $('#p2Converted').addClass('is-hidden');
+      $('#ProcessingFinished').addClass('is-hidden');
     }, 2500);
     return;
   });
@@ -102,11 +103,11 @@ $(document).ready(() => {
     On file conversion failure
   */
   ipcRenderer.on('convertpdf:input.file.failure', function(event) {
-    $('#p2Converting').addClass('is-hidden');
-    $('#p2Intro').removeClass('is-hidden');
-    $('#p2Failed').removeClass('is-hidden');
+    $('#Processing').addClass('is-hidden');
+    $('#Start').removeClass('is-hidden');
+    $('#ProcessingFailed').removeClass('is-hidden');
     setTimeout(() => {
-      $('#p2Failed').addClass('is-hidden');
+      $('#ProcessingFailed').addClass('is-hidden');
     }, 2500);
     return;
   });
@@ -131,7 +132,7 @@ $(document).ready(() => {
     holder.ondrop = function(event) {
       event.preventDefault();
       for (let f of event.dataTransfer.files) {
-        if ($('#processfoldertickbox').is(':checked')) {
+        if ($('#SOProcessFolderTickbox').is(':checked')) {
           ipcRenderer.send('convertpdf:drag.folder', f.path);
         } else {
           ipcRenderer.send('convertpdf:drag.file', f.path);
@@ -147,7 +148,7 @@ $(document).ready(() => {
   $('#p2Container').on('drop', function(event) {
     event.preventDefault();
     for (let f of event.originalEvent.dataTransfer.files) {
-      if ($('#processfoldertickbox').is(':checked')) {
+      if ($('#SOProcessFolderTickbox').is(':checked')) {
         ipcRenderer.send('convertpdf:drag.folder', f.path);
       } else {
         ipcRenderer.send('convertpdf:drag.file', f.path);
@@ -160,10 +161,10 @@ $(document).ready(() => {
   /*
     Drag and drop action
    */
-  $('#p2ButtonDragndrop').on('drop', function(event) {
+    $('#p2ButtonDragndrop').on('drop', function(event) {
     event.preventDefault();
     for (let f of event.originalEvent.dataTransfer.files) {
-      if ($('#processfoldertickbox').is(':checked')) {
+      if ($('#SOProcessFolderTickbox').is(':checked')) {
         ipcRenderer.send('convertpdf:drag.folder', f.path);
       } else {
         ipcRenderer.send('convertpdf:drag.file', f.path);
@@ -176,9 +177,35 @@ $(document).ready(() => {
   /*
     Update current conversion type to selection
    */
-  $('#selectedAction').on('change', function() {
+  $('#SOSelect').on('change', function() {
     var currentAction = this.value;
     options.conversionType = currentAction;
     updateOptions();
+    switch (currentAction) {
+      case 'pdfmetaclone':
+        $('#S2OneButtonLabel').text('Select file');
+        $('#S2ThreeButtonLabel').text('Drag target file');
+        $('#S2OneLabel').text('2. Select source file');
+        $('#S2Two').css('display', 'none');
+        $('#S2Three').css('display', 'none');
+        $('#StepThree').removeClass('is-hidden');
+        $('#SOProcessFolderContainer').css('display', 'none');
+        break;
+
+      default:
+        $('#S2Two').css('display', 'block');
+        $('#S2Three').css('display', 'block');
+        $('#StepThree').addClass('is-hidden');
+        $('#SOProcessFolderContainer').css('display', 'block');
+        if ($('#SOProcessFolderTickbox').is(':checked')) {
+          $('#S2OneButtonLabel').text('Select folder');
+          $('#S2ThreeButtonLabel').text('Drag folder here');
+          $('#S2OneLabel').text('2. Select folder');
+        } else {
+          $('#S2OneButtonLabel').text('Select file');
+          $('#S2ThreeButtonLabel').text('Drag file here');
+          $('#S2OneLabel').text('2. Select file');
+        }
+    }
   });
 });

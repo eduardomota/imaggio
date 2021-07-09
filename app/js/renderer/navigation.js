@@ -44,7 +44,6 @@ $('#navButtonDevtools').click(function() {
 $('.delete').click(function() {
   ipcRenderer.send('app:debug', ".delete (notifications) was clicked");
   var notificationId = $(this).attr('data-notif');
-
   $('#' + notificationId).addClass('is-hidden');
 
   return;
@@ -55,9 +54,7 @@ $('.delete').click(function() {
     On keyup: Assign [ESC] key to close messages or modals
  */
 $(document).keyup(function(event) {
-  if (event.keyCode === 27) {
-  //  ipcRenderer.send('app:debug', "Hotkey, Used [ESC] key, {0}".format(event.keyCode));
-  }
+  if (event.keyCode === 27) {}
   return;
 });
 
@@ -94,5 +91,3 @@ $('#navButtonExit').click(function() {
 
   return;
 });
-
-console.log("OK|!");

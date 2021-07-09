@@ -94,6 +94,7 @@ app.on('window-all-closed', () => {
 // Update Current conversion options
 ipcMain.on('convertpdf:updateoptions', function(event, updatedOptions) {
   mainOptions = updatedOptions;
+  console.log(mainOptions);
 });
 
 // Kill process
@@ -123,7 +124,7 @@ ipcMain.on('convertpdf:input.file', function(event) {
   if (filePath === undefined || filePath == '' || filePath === null) return;
 
   console.log(`Selected file path OK: ${filePath}`);
-  let file = filePath[0];
+  let file = `${filePath[0]}`;
 
   convertPdf(file, event);
 });
@@ -391,6 +392,24 @@ function getOptions() {
     case 'pdf2detach':
       options = {
         format: 'detach'
+      };
+      break;
+
+      /*
+        PDF REMOVE META
+       */
+    case 'pdfmetaremove':
+      options = {
+        action: 'pdfmetaremove'
+      };
+      break;
+
+      /*
+        PDF CLONE META
+       */
+    case 'pdfmetaclone':
+      options = {
+        action: 'pdfmetaclone'
       };
       break;
 
