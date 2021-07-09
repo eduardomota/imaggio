@@ -5,71 +5,20 @@
     Loads HTML files inside the renderer
  */
 (async function loadHtml() {
-  var htmlpath = "./";
+  var htmlpath = './';
   var path = {
-    nav: htmlpath + "navigation/",
-    tab: htmlpath + "tabs/",
+    nav: htmlpath + 'navigation/',
+    tab: htmlpath + 'tabs/',
   };
-  var additionalPaths = {
-    bw: htmlpath + path.tab + "bw/",
-    bwa: htmlpath + path.tab + "bwa/",
-    bwm: htmlpath + path.tab + "bwm/",
-    to: htmlpath + path.tab + "to/",
-    op: htmlpath + path.tab + "op/"
+  var files = {
+    navTop: 'navTop.html',
+    p2Container: 'p2.html'
   };
 
-  Object.assign(path, additionalPaths);
+  // Top bar & container
+  $('#navTop').load(path.nav + files.navTop);
+  $('#p2Container').load(path.tab + files.p2Container);
 
-  var {
-    bw,
-    bwa,
-    bwm,
-    to,
-    op,
-    nav,
-    tab
-  } = path;
-
-  // Navigation bar
-  $('#navTop').load(nav + "navTop.html");
-  //$('#navBottom').load(nav + "navBottom.html");
-
-  // Pdf2jpeg
-  $('#p2Container').load(tab + "p2.html");
-/*
-  // Bulk whois lookup tab/steps
-  $('#bwEntry').load(bw + "bwEntry.html");
-
-  // Bulk whois file input
-  $('#bwFileinputloading').load(bw + "bwFileinputloading.html");
-  $('#bwFileinputconfirm').load(bw + "bwFileinputconfirm.html");
-
-  // Bulk whois wordlist input
-  $('#bwWordlistinput').load(bw + "bwWordlistinput.html");
-  $('#bwWordlistloading').load(bw + "bwWordlistloading.html");
-  $('#bwWordlistconfirm').load(bw + "bwWordlistconfirm.html");
-
-  // Bulk whois processing
-  $('#bwProcessing').load(bw + "bwProcessing.html");
-  $('#bwExport').load(bw + "bwExport.html");
-  $('#bwExportloading').load(bw + "bwExportloading.html");
-
-  // Bulk whois analyser containers
-  $('#bwaEntry').load(bwa + "bwaEntry.html");
-  $('#bwaFileinputloading').load(bwa + "bwaFileinputloading.html");
-  $('#bwaFileinputconfirm').load(bwa + "bwaFileinputconfirm.html");
-  $('#bwaProcess').load(bwa + "bwaProcess.html");
-  $('#bwaAnalyser').load(bwa + "bwaAnalyser.html");
-
-  // Wordlist tools containers
-  $('#toEntry').load(to + "toEntry.html");
-
-  // Options container
-  $('#opEntry').load(op + "opEntry.html");
-
-  // Help container
-  $('#heMainContainer').load(tab + "he.html");
-*/
   return;
 })();
 
