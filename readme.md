@@ -56,6 +56,10 @@ Q: Can I get fine tuning options?
 
 A: No, this tool is meant for general, fast, major use case scenarios, if you want fine tuning you'll have to use the original binaries and their command line parameters.
 
+Q: Why can't i drop a file on "clone metadata" option?
+
+A: To not mess up source and target file metadata, this is by design and is not meant to be changed.
+
 ## Quick Start
 
 Stay on the bleeding edge of imaggio commits using `git clone` or for slightly tested version download the latest built release.
@@ -63,6 +67,10 @@ Stay on the bleeding edge of imaggio commits using `git clone` or for slightly t
 ### File output
 
 Files used in the application will not be modified, the output files will have `min` or number to indicate and distinguish the file as well as `jpg` or whatever extension is appropriate to the chosen option. Along with that you're able to distinguish these processed files by looking at the modification date with explorer's list view.
+
+### Notes on scripts
+
+These executable files inside the `scripts` folder are meant to launch or kill imaggio easily, used just for debugging/testing purposes. We're made with AutoIt and are decompilable.
 
 ### Latest built binary
 

@@ -17,8 +17,11 @@ function convertFile(file, options) {
   return new Promise((resolve, reject) => {
     var executable = compileExecutablePath(options),
       arguments = compileArguments(file, options);
+    var {
+      executionOptions
+    } = exiftoolVars;
 
-    currentExec = execFile(executable, arguments, (error, stdout, stderr) => {
+    currentExec = execFile(executable, arguments, executionOptions, (error, stdout, stderr) => {
       if (error) reject(error);
       resolve(stdout);
     });
@@ -49,10 +52,12 @@ function compileArguments(file, options) {
     outputFile = path.join(options.outputDirectory, options.outputFile);
 
   if (options.action.includes('clone')) { // Clone metadata from file to file
+    var sourceFile = options.inputFile,
+      targetFile = file;
     arguments.push(`-TagsFromFile`);
-    arguments.push(`"${sourcefile}"`);
+    arguments.push(`"${sourceFile.toString()}"`);
     arguments.push(`"-all:all>all:all"`);
-    arguments.push(`"${targetfile}"`);
+    arguments.push(`"${targetFile.toString()}"`);
   }
 
   if (options.action.includes('remove')) { // Remove all metadata from file
@@ -89,7 +94,8 @@ function processQuit() {
 function getExiftoolVars() {
   return {
     path: getExiftoolVarsPath(),
-    defaultOptions: getExiftoolVarsDefaultOptions()
+    defaultOptions: getExiftoolVarsDefaultOptions(),
+    executionOptions: getExiftoolVarsExecutionOptions()
   };
 }
 
@@ -106,6 +112,15 @@ function getExiftoolVarsPath() {
     'exiftool-12.28'
   );
 }
+
+function getExiftoolVarsExecutionOptions() {
+  return {
+    encoding: 'utf8',
+    maxBuffer: 5120000,
+    shell: false
+  };
+}
+
 
 /*
   getExiftoolVarsDefaultOptions

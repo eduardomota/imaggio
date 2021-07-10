@@ -7,7 +7,8 @@ const electron = require('electron'),
   pdfPoppler = require('./binaries/poppler'),
   pdfGhostscript = require('./binaries/ghostscript'),
   pdfStamper = require('./binaries/pdfstamper'),
-  officeToPdf = require('./binaries/officetopdf');
+  officeToPdf = require('./binaries/officetopdf'),
+  exiftool = require('./binaries/exiftool');
 
 const {
   app,
@@ -129,6 +130,31 @@ ipcMain.on('convertpdf:input.file', function(event) {
   convertPdf(file, event);
 });
 
+
+/*
+  clone file selection source
+ */
+ipcMain.on('convertpdf:input.file.clone', function(event) {
+  if (mainOptions.conversionType === null) return;
+
+  var filePath = dialog.showOpenDialogSync({
+    title: "Select file",
+    buttonLabel: "Open",
+    properties: ['openFile', 'showHiddenFiles']
+  });
+
+  var {
+    sender
+  } = event;
+
+  if (filePath === undefined || filePath == '' || filePath === null) return;
+
+  console.log(`Selected file path OK: ${filePath}`);
+  let file = `${filePath[0]}`;
+
+  mainOptions.inputFile = file;
+});
+
 /*
   Input folder processing
  */
@@ -202,6 +228,10 @@ function convertPdf(file, event, isMassFileConvert = false) {
 
   let opts = getOptions();
 
+  if (mainOptions.hasOwnProperty('inputFile')) opts = { ...opts,
+    inputFile: mainOptions.inputFile
+  };
+
   console.log(mainOptions);
   console.log(opts);
 
@@ -219,6 +249,26 @@ function convertPdf(file, event, isMassFileConvert = false) {
 
   } else if ((opts.format === 'pdf' && mainOptions !== 'splitpdf') || opts.format === 'pdfa') {
     pdfGhostscript.convert(file, opts)
+      .then((res) => {
+        console.log(`Successfully converted file`);
+        sender.send('convertpdf:input.file.success');
+      })
+      .catch((error) => {
+        console.log(`Failed to convert with error: ${error.stack}`);
+        sender.send('convertpdf:input.file.failure', error);
+      });
+  } else if (opts.action === 'pdfmetaremove') {
+    exiftool.convert(file, opts)
+      .then((res) => {
+        console.log(`Successfully converted file`);
+        sender.send('convertpdf:input.file.success');
+      })
+      .catch((error) => {
+        console.log(`Failed to convert with error: ${error.stack}`);
+        sender.send('convertpdf:input.file.failure', error);
+      });
+  } else if (opts.action === 'pdfmetaclone') {
+    exiftool.convert(file, opts)
       .then((res) => {
         console.log(`Successfully converted file`);
         sender.send('convertpdf:input.file.success');

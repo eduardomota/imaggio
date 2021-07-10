@@ -13,7 +13,7 @@ var options = {
   conversionType: null
 };
 
-updateOptions();
+startupRoutine();
 
 /*
   updateOptions
@@ -23,6 +23,14 @@ function updateOptions() {
   ipcRenderer.send('convertpdf:updateoptions', options);
 }
 
+/*
+  startupRoutine
+    Startup routines
+ */
+function startupRoutine() {
+  updateOptions();
+}
+
 $(document).ready(() => {
   require('../js/renderer/navigation');
 
@@ -30,11 +38,23 @@ $(document).ready(() => {
     Open file/folder button
    */
   $('#S2OneButton').click(function() {
+    if (options.conversionType === 'pdfmetaclone') {
+      ipcRenderer.send('convertpdf:input.file.clone');
+      return;
+    }
     if ($('#SOProcessFolderTickbox').is(':checked')) {
       ipcRenderer.send('convertpdf:input.folder');
     } else {
       ipcRenderer.send('convertpdf:input.file');
     }
+    return;
+  });
+
+  /*
+  meta clone button
+   */
+  $('#S3Button').click(function() {
+    ipcRenderer.send('convertpdf:input.file');
     return;
   });
 
@@ -131,6 +151,7 @@ $(document).ready(() => {
 
     holder.ondrop = function(event) {
       event.preventDefault();
+      if (options.conversionType === 'pdfmetaclone') return;
       for (let f of event.dataTransfer.files) {
         if ($('#SOProcessFolderTickbox').is(':checked')) {
           ipcRenderer.send('convertpdf:drag.folder', f.path);
@@ -147,22 +168,7 @@ $(document).ready(() => {
    */
   $('#p2Container').on('drop', function(event) {
     event.preventDefault();
-    for (let f of event.originalEvent.dataTransfer.files) {
-      if ($('#SOProcessFolderTickbox').is(':checked')) {
-        ipcRenderer.send('convertpdf:drag.folder', f.path);
-      } else {
-        ipcRenderer.send('convertpdf:drag.file', f.path);
-      }
-    }
-
-    return false;
-  });
-
-  /*
-    Drag and drop action
-   */
-    $('#p2ButtonDragndrop').on('drop', function(event) {
-    event.preventDefault();
+    if (options.conversionType === 'pdfmetaclone') return;
     for (let f of event.originalEvent.dataTransfer.files) {
       if ($('#SOProcessFolderTickbox').is(':checked')) {
         ipcRenderer.send('convertpdf:drag.folder', f.path);
