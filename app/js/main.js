@@ -8,7 +8,8 @@ const electron = require('electron'),
   pdfGhostscript = require('./binaries/ghostscript'),
   pdfStamper = require('./binaries/pdfstamper'),
   officeToPdf = require('./binaries/officetopdf'),
-  exiftool = require('./binaries/exiftool');
+  exiftool = require('./binaries/exiftool'),
+  imagemagick = require('./binaries/imagemagick');
 
 const {
   app,
@@ -235,7 +236,17 @@ function convertPdf(file, event, isMassFileConvert = false) {
   console.log(mainOptions);
   console.log(opts);
 
-  if (opts.format === 'pdf' && opts.action === 'doc2pdf') {
+  if (opts.action === 'grayscale') {
+    imagemagick.convert(file, opts)
+      .then((res) => {
+        console.log(`Successfully converted file`);
+        sender.send('convertpdf:input.file.success');
+      })
+      .catch((error) => {
+        console.log(`Failed to convert with error: ${error.stack}`);
+        sender.send('convertpdf:input.file.failure', error);
+      });
+  } else if (opts.format === 'pdf' && opts.action === 'doc2pdf') {
     officeToPdf.convert(file, opts)
       .then((res) => {
         console.log(`Successfully converted file`);
@@ -518,6 +529,15 @@ function getOptions() {
         format: 'pdf',
         action: 'doc2pdf',
         type: '1'
+      }
+      break;
+
+      /*
+        IMG TO GRAYSCALE
+       */
+    case 'grayscalepic':
+      options = {
+        action: 'grayscale'
       }
   }
 
