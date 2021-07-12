@@ -32,6 +32,7 @@ The included binaries have been UPX (--ultra-brute) compressed for manageability
 - Convert to PDF/A
 - Compress and convert to PDF/A (3 options)
 - Metadata (remove or clone from one to another)
+- Convert image file to gray scale
 
 ### Planned features
 
