@@ -77,8 +77,8 @@ These executable files inside the `scripts` folder are meant to launch or kill i
 
 Check out and download the latest release for your architecture/OS.
 
-![Latest tag](https://img.shields.io/github/tag/eduardomota/imaggio.svg?label=Latest%20tag&style=flat)
-[![Check out releases](https://img.shields.io/badge/Checkout%20releases-%20-orange.svg)](https://github.com/eduardomota/imaggio/releases)
+![Latest tag](https://img.shields.io/github/tag/whois-team/imaggio.svg?label=Latest%20tag&style=flat)
+[![Check out releases](https://img.shields.io/badge/Checkout%20releases-%20-orange.svg)](https://github.com/whois-team/imaggio/releases)
 
 ### Latest changes
 
