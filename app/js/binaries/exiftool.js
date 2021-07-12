@@ -2,7 +2,7 @@ const os = require('os'),
   path = require('path');
 
 const {
-  execFile
+  exec
 } = require('child_process');
 
 // Startup routine
@@ -21,7 +21,9 @@ function convertFile(file, options) {
       executionOptions
     } = exiftoolVars;
 
-    currentExec = execFile(executable, arguments, executionOptions, (error, stdout, stderr) => {
+    executable = `${executable} ${arguments.join(' ')}`;
+
+    currentExec = exec(executable, executionOptions, (error, stdout, stderr) => {
       if (error) reject(error);
       resolve(stdout);
     });
