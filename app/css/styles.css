@@ -88,3 +88,15 @@ input[type="checkbox"] {
 #S3Label {
   user-select: none;
 }
+
+@media screen and (min-width: 1024px) {
+  .navbar-burger {
+    display: block;
+  }
+  .navbar-brand {
+    width: 100%;
+  }
+  #navTop {
+    width: 100%;
+  }
+}
