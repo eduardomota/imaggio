@@ -2,7 +2,7 @@ const os = require('os'),
   path = require('path');
 
 const {
-  execFile
+  exec
 } = require('child_process');
 
 // dosPath conversion
@@ -26,7 +26,11 @@ function convertPdfFile(file, options) {
 
     console.log(4);
 
-    currentExec = execFile(executable, arguments, executionOptions, (error, stdout, stderr) => {
+    executable = `${executable} ${arguments.join(' ')}`;
+
+    console.log("TEST", executable);
+
+    currentExec = exec(executable, executionOptions, (error, stdout, stderr) => {
       if (error) reject(error);
       resolve(stdout);
     })
@@ -58,6 +62,8 @@ function compileExecutablePath(options) {
     executable = 'pdftocairo';
   } else if (text.includes(format)) {
     executable = 'pdftotext';
+  } else if (html.includes(format)) {
+    executable = 'pdftohtml';
   } else if (ppm.includes(format)) {
     executable = 'pdftoppm';
   } else if (extract.includes(format)) {
@@ -95,54 +101,83 @@ options = {
 function compileArguments(file, options) {
   var outputDir = path.dirname(file);
   var options = { ...options,
-    outputDirectory: options.outputDirectory ? options.outputDirectory : outputDir,
-    outputFile: options.outputFile ? options.outputFile : path.basename(file, path.extname(file))
-  };
-  console.log(outputDir);
-  var arguments = [],
+      outputDirectory: options.outputDirectory ? options.outputDirectory : outputDir,
+      outputFile: options.outputFile ? options.outputFile : path.basename(file, path.extname(file))
+    },
+    {
+      excludedFormats,
+      types
+    } = popplerVars,
+    arguments = [],
     outputFile = path.join(options.outputDirectory, options.outputFile);
-  var {
-    excludedFormats,
-    types
-  } = popplerVars;
 
-  if (types.cairo.includes(options.format)) arguments.push(`-${options.format}`); // Format
+  // Cairo format
+  if (types.cairo.includes(options.format))
+    arguments.push(`-${options.format}`);
+  // First page
   if (options.firstPage) {
     arguments.push(`-f`);
     arguments.push(`${parseInt(options.firstPage)}`);
-  } // Start page
+  }
+  // Last page
   if (options.lastPage) {
     arguments.push(`-l`);
     arguments.push(`${parseInt(options.lastPage)}`);
-  } // Last page
+  }
+  // Single page
   if (options.singlePage) {
     arguments.push(`-f`);
     arguments.push(`${parseInt(options.singlePage)}`);
     arguments.push(`-l`);
     arguments.push(`${parseInt(options.singlePage)}`);
-  } // Single page selection
+  }
+  // Odd pages only
   if (options.oddPages) argmuments.push(`-o`);
+  // Even pages only
   if (options.evenPages) arguments.push(`-e`);
-  if (options.scaleTo) {
+
+  // Scale to option if is not excluded
+  if (options.scaleTo && !(excludedFormats.includes(options.format))) {
     arguments.push(`-scale-to`);
     arguments.push(`${parseInt(options.scaleTo)}`);
-  } // Scale to
+  }
+
+  // Grayscale option
   if (options.grayscale) arguments.push(`-gray`);
   if (options.nativeimages) arguments.push(`-all`);
-  if (options.format === 'pdf') outputFile = `${outputFile}_min.pdf`;
-  if (options.format === 'svg') outputFile = `${outputFile}.svg`;
-  if (options.format === 'txt') outputFile = `${outputFile}.txt`;
 
+  // Pdf format
+  if (options.format === 'pdf') outputFile = `${outputFile}_min.pdf`;
+  // SVG vector format
+  if (options.format === 'svg') outputFile = `${outputFile}.svg`;
+  // Text format
+  if (options.format === 'txt') outputFile = `${outputFile}.txt`;
+  // Detach operation
   if (options.format === 'detach') arguments.push(`-saveall`);
 
-  arguments.push(`${file}`);
+  // Input file
+  arguments.push(`"${file}"`);
 
-  if (options.format === 'separate') arguments.push(`${path.join(options.outputDirectory, options.outputFile)}_%d.pdf`);
+  // If not excluded format insert output format
+  if (!(excludedFormats.includes(options.format))) arguments.push(`"${outputFile}"`);
+
+  // Separate action, output file
+  if (options.format === 'separate') arguments.push(`"${path.join(options.outputDirectory, options.outputFile)}_%d.pdf"`);
+  // Extract action, png option + output file
   if (options.format === 'extract') {
     arguments.push(`-png`);
-    arguments.push(`${path.join(options.outputDirectory, options.outputFile)}`);
+    arguments.push(`"${path.join(options.outputDirectory, options.outputFile)}"`);
   }
-  if (!(excludedFormats.includes(options.format))) arguments.push(`${outputFile}`);
+
+  // PPM output file
+  if (types.ppm.includes(options.format)) arguments.push(`"${outputFile}"`);
+  // PPM format
+  if (types.ppm.includes(options.format) && options.format != 'ppm') arguments.push(`-${options.format}`);
+  // PPM scale to
+  if (options.scaleTo && excludedFormats.includes(options.format)) {
+    arguments.push(`-scale-to`);
+    arguments.push(`${parseInt(options.scaleTo)}`);
+  }
 
   return arguments;
 }
@@ -203,7 +238,7 @@ function getPopplerVarsPath() {
 function getPopplerVarsExecutionOptions() {
   return {
     encoding: 'utf8',
-    maxBuffer: 5120000,
+    maxBuffer: 51200000,
     shell: false
   };
 }
@@ -228,8 +263,8 @@ function getPopplerVarsDefaultOptions() {
  */
 function getPopplerVarsDefaultTypes() {
   return types = {
-    cairo: ['png', 'jpeg', 'tiff', 'svg', 'pdf', 'ps', 'eps'],
-    ppm: ['ppm'],
+    cairo: ['png', 'jpeg', 'svg', 'pdf', 'ps', 'eps'],
+    ppm: ['ppm', 'tiff'],
     text: ['txt', 'text'],
     html: ['html'],
     extract: ['extract'],
@@ -243,7 +278,7 @@ function getPopplerVarsDefaultTypes() {
     Gets default poppler excluded formats to exclude -format from command line
  */
 function getPopplerVarsExcludedFormats() {
-  return ['extract', 'separate', 'html', 'detach'];
+  return ['extract', 'separate', 'html', 'detach', 'ppm', 'tiff'];
 }
 
 module.exports = {
