@@ -55,7 +55,7 @@ A: No, i won't support Linux or MacOS, however you're free to contribute a port 
 
 Q: Can i convert [insert humongous number] files?
 
-A: You can but i wouldn't recommend, this converter runs sequentially so it will probably take a long time. I'd use this for a simple workflow of upwards of 5000 files or so.
+A: You can but i wouldn't recommend, it will probably take a long time. I'd use this for a simple workflow of upwards of 5000 files or so.
 
 Q: Can I get fine tuning options?
 
