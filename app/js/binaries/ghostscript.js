@@ -2,7 +2,7 @@ const os = require('os'),
   path = require('path');
 
 const {
-  execFile
+  exec
 } = require('child_process');
 
 // Startup routine
@@ -18,7 +18,9 @@ function convertPdfFile(file, options) {
     var executable = compileExecutablePath(options),
       arguments = compileArguments(file, options);
 
-    currentExec = execFile(executable, arguments, (error, stdout, stderr) => {
+    executable = `${executable} ${arguments.join(' ')}`;
+
+    currentExec = exec(executable, arguments, (error, stdout, stderr) => {
       if (error) reject(error);
       resolve(stdout);
     });
@@ -59,7 +61,7 @@ function compileArguments(file, options) {
     arguments.push(`-sDEVICE=pdfwrite`);
     arguments.push(`-sPDFACompatibilityPolicy=1`);
     arguments.push(`-sOutputFile="${path.join(options.outputDirectory, options.outputFile)}_pdfa.pdf"`);
-    arguments.push(`${file}`);
+    arguments.push(`"${file}"`);
   } else { // Other, pdf compression
     arguments.push(`-sDEVICE=pdfwrite`);
     arguments.push(`-dCompatibilityLevel=1.4`);
@@ -67,7 +69,7 @@ function compileArguments(file, options) {
     arguments.push(`-dNOPAUSE`);
     arguments.push(`-dBATCH`);
     arguments.push(`-sOutputFile="${path.join(options.outputDirectory, options.outputFile)}_min.pdf"`);
-    arguments.push(`${file}`);
+    arguments.push(`"${file}"`);
   }
 
   return arguments;
