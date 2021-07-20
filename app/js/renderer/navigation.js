@@ -55,12 +55,13 @@ $('.delete').click(function() {
  */
 $(document).keyup(function(event) {
   if (event.keyCode === 27) {}
+  
   return;
 });
 
 /*
   $('#navButtonExtendedmenu').click(function() {...});
-    Button/Toggle special menu items
+    On click: Button/Toggle special menu items
  */
 $('#navButtonExtendedmenu').click(function() {
   ipcRenderer.send('app:debug', "#navButtonExtendedmenu was clicked");
