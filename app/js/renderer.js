@@ -73,13 +73,19 @@ $(document).ready(() => {
     if (options.conversionType === 'pdfmetaclone') return;
 
     if ($(this).is(':checked')) {
-      $('#S2OneButtonLabel').text('Select folder');
-      $('#S2ThreeButtonLabel').text('Drag folder here');
-      $('#S2OneLabel').text('2. Select folder');
+      $('#stepTwoLabel').addClass('is-hidden');
+      $('#stepTwoLabel2').removeClass('is-hidden');
+      $('#stepTwoButtonLabel').addClass('is-hidden');
+      $('#stepTwoButtonLabel2').removeClass('is-hidden');
+      $('#stepTwoDragLabel').addClass('is-hidden');
+      $('#stepTwoDragLabel2').removeClass('is-hidden');
     } else {
-      $('#S2OneButtonLabel').text('Select file');
-      $('#S2ThreeButtonLabel').text('Drag file here');
-      $('#S2OneLabel').text('2. Select file');
+      $('#stepTwoLabel').removeClass('is-hidden');
+      $('#stepTwoLabel2').addClass('is-hidden');
+      $('#stepTwoButtonLabel').removeClass('is-hidden');
+      $('#stepTwoButtonLabel2').addClass('is-hidden');
+      $('#stepTwoDragLabel').removeClass('is-hidden');
+      $('#stepTwoDragLabel2').addClass('is-hidden');
     }
   });
 
@@ -188,29 +194,47 @@ $(document).ready(() => {
     options.conversionType = currentAction;
     updateOptions();
     switch (currentAction) {
+      // PDF metadata clone option
       case 'pdfmetaclone':
-        $('#S2OneButtonLabel').text('Select file');
-        $('#S2ThreeButtonLabel').text('Drag target file');
-        $('#S2OneLabel').text('2. Select source file');
+        // Hide and show correct labels, file option
+        $('#stepTwoLabel').removeClass('is-hidden');
+        $('#stepTwoLabel2').addClass('is-hidden');
+        $('#stepTwoButtonLabel').removeClass('is-hidden');
+        $('#stepTwoButtonLabel2').addClass('is-hidden');
+        $('#stepTwoDragLabel').removeClass('is-hidden');
+        $('#stepTwoDragLabel2').addClass('is-hidden');
+        // Hide step 2 partially
         $('#S2Two').css('display', 'none');
         $('#S2Three').css('display', 'none');
+        // Show step 3
         $('#StepThree').removeClass('is-hidden');
+        // Hide process folder tickbox option
         $('#SOProcessFolderContainer').css('display', 'none');
         break;
 
       default:
+        // Show step 2
         $('#S2Two').css('display', 'block');
         $('#S2Three').css('display', 'block');
+        // Hide step 3
         $('#StepThree').addClass('is-hidden');
         $('#SOProcessFolderContainer').css('display', 'block');
         if ($('#SOProcessFolderTickbox').is(':checked')) {
-          $('#S2OneButtonLabel').text('Select folder');
-          $('#S2ThreeButtonLabel').text('Drag folder here');
-          $('#S2OneLabel').text('2. Select folder');
+          // Hide and show correct labels, folder option
+          $('#stepTwoLabel').addClass('is-hidden');
+          $('#stepTwoLabel2').removeClass('is-hidden');
+          $('#stepTwoButtonLabel').addClass('is-hidden');
+          $('#stepTwoButtonLabel2').removeClass('is-hidden');
+          $('#stepTwoDragLabel').addClass('is-hidden');
+          $('#stepTwoDragLabel2').removeClass('is-hidden');
         } else {
-          $('#S2OneButtonLabel').text('Select file');
-          $('#S2ThreeButtonLabel').text('Drag file here');
-          $('#S2OneLabel').text('2. Select file');
+          // Hide and show correct labels, file option
+          $('#stepTwoLabel').removeClass('is-hidden');
+          $('#stepTwoLabel2').addClass('is-hidden');
+          $('#stepTwoButtonLabel').removeClass('is-hidden');
+          $('#stepTwoButtonLabel2').addClass('is-hidden');
+          $('#stepTwoDragLabel').removeClass('is-hidden');
+          $('#stepTwoDragLabel2').addClass('is-hidden');
         }
     }
   });
