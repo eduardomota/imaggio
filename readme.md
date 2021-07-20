@@ -13,7 +13,7 @@ This application is mostly a GUI for several different binaries that interact wi
 - [Features](#features)
 - [Quick Start](#quick-start)
 - [Building](#building)
-- [Built With](#built-with)
+- [Built with](#built-with)
 - [License](#license)
 
 ## Requirements
