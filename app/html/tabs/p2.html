@@ -2,86 +2,189 @@
   <div id="Start">
     <div id="StepOne" class="column">
       <div class="field">
-        <label id="S1Label" class="label">1. Select action</label>
+        <label id="S1Label" class="label">
+          <tag id="stepOneLabel">1. Select action</tag>
+        </label>
         <div class="control">
           <div class="select">
             <select id="SOSelect">
-              <option value="null">Select action</option>
+              <option value="null">
+                <tag id="stepOneSelectActionLabel">Select action</tag>
+              </option>
 
-              <option class="separator" value="null" disabled>+ PDF TO IMAGE/GRAPHIC</option>
-              <option value="pdf2jpeglow">PDF to JPEG low (1 image per page)</option>
-              <option value="pdf2jpegmedium">PDF to JPEG medium (1 image per page)</option>
-              <option value="pdf2jpeghigh">PDF to JPEG high (1 image per page)</option>
-              <option value="pdf2pnglow">PDF to PNG low (1 image per page)</option>
-              <option value="pdf2pngmedium">PDF to PNG medium (1 image per page)</option>
-              <option value="pdf2pnghigh">PDF to PNG high (1 image per page)</option>
-              <option value="pdf2svg">PDF to SVG (1 vector per document)</option>
+              <option class="separator" value="null" disabled>
+                <tag id="stepOneSelectPdfGraphic">+ PDF TO IMAGE/GRAPHIC</tag>
+              </option>
+              <option value="pdf2jpeglow">
+                <tag id="stepOneSelectPdfGraphic1">PDF to JPEG low (1 image per page)</tag>
+              </option>
+              <option value="pdf2jpegmedium">
+                <tag id="stepOneSelectPdfGraphic2">PDF to JPEG medium (1 image per page)</tag>
+              </option>
+              <option value="pdf2jpeghigh">
+                <tag id="stepOneSelectPdfGraphic3">PDF to JPEG high (1 image per page)</tag>
+              </option>
+              <option value="pdf2pnglow">
+                <tag id="stepOneSelectPdfGraphic4">PDF to PNG low (1 image per page)</tag>
+              </option>
+              <option value="pdf2pngmedium">
+                <tag id="stepOneSelectPdfGraphic5">PDF to PNG medium (1 image per page)</tag>
+              </option>
+              <option value="pdf2pnghigh">
+                <tag id="stepOneSelectPdfGraphic6">PDF to PNG high (1 image per page)</tag>
+              </option>
+              <option value="pdf2svg">
+                <tag id="stepOneSelectPdfGraphic7">PDF to SVG (1 vector per document)</tag>
+              </option>
 
-              <option class="separator" value="null" disabled>+ PDF TO IMAGE/GRAPHIC - OTHER</option>
-              <option value="pdf2tifflow">PDF to TIFF low (1 image per page)</option>
-              <option value="pdf2tiffmedium">PDF to TIFF medium (1 image per page)</option>
-              <option value="pdf2tiffhigh">PDF to TIFF high (1 image per page)</option>
-              <option value="pdf2ppmlow">PDF to PPM low (1 image per page)</option>
-              <option value="pdf2ppmmedium">PDF to PPM medium (1 image per page)</option>
-              <option value="pdf2ppmhigh">PDF to PPM high (1 image per page)</option>
+              <option class="separator" value="null" disabled>
+                <tag id="stepOneSelectPdfGraphicOther">+ PDF TO IMAGE/GRAPHIC - OTHER</tag>
+              </option>
+              <option value="pdf2tifflow">
+                <tag id="stepOneSelectPdfGraphicOther1">PDF to TIFF low (1 image per page)</tag>
+              </option>
+              <option value="pdf2tiffmedium">
+                <tag id="stepOneSelectPdfGraphicOther2">PDF to TIFF medium (1 image per page)</tag>
+              </option>
+              <option value="pdf2tiffhigh">
+                <tag id="stepOneSelectPdfGraphicOther3">PDF to TIFF high (1 image per page)</tag>
+              </option>
+              <option value="pdf2ppmlow">
+                <tag id="stepOneSelectPdfGraphicOther4">PDF to PPM low (1 image per page)</tag>
+              </option>
+              <option value="pdf2ppmmedium">
+                <tag id="stepOneSelectPdfGraphicOther5">PDF to PPM medium (1 image per page)</tag>
+              </option>
+              <option value="pdf2ppmhigh">
+                <tag id="stepOneSelectPdfGraphicOther6">PDF to PPM high (1 image per page)</tag>
+              </option>
 
-              <option class="separator" value="null" disabled>+ DOCUMENT TO PDF</option>
-              <option value="doc2pdf">Word (doc, docx, rtf, ...) to PDF</option>
-              <option value="doc2pdf">Excel (xls, xlsx, csv, ...) to PDF</option>
-              <option value="doc2pdf">PowerPoint (ppt, pptx, pps, ...) to PDF</option>
-              <option value="doc2pdf">Visio (vsd, svg, ...) to PDF</option>
-              <option value="doc2pdf">Outlook (msg, vcf, ics) to PDF</option>
-              <option value="doc2pdf">Project (mpp) to PDF</option>
-              <option value="doc2pdf">OpenOffice (odt, odp, ods) to PDF</option>
+              <option class="separator" value="null" disabled>
+                <tag id="stepOneSelectDocPdf">+ DOCUMENT TO PDF</tag>
+              </option>
+              <option value="doc2pdf">
+                <tag id="stepOneSelectDocPdf1">Word (doc, docx, rtf, ...) to PDF</tag>
+              </option>
+              <option value="doc2pdf">
+                <tag id="stepOneSelectDocPdf2">Excel (xls, xlsx, csv, ...) to PDF</tag>
+              </option>
+              <option value="doc2pdf">
+                <tag id="stepOneSelectDocPdf3">PowerPoint (ppt, pptx, pps, ...) to PDF</tag>
+              </option>
+              <option value="doc2pdf">
+                <tag id="stepOneSelectDocPdf4">Visio (vsd, svg, ...) to PDF</tag>
+              </option>
+              <option value="doc2pdf">
+                <tag id="stepOneSelectDocPdf5">Outlook (msg, vcf, ics) to PDF</tag>
+              </option>
+              <option value="doc2pdf">
+                <tag id="stepOneSelectDocPdf6">Project (mpp) to PDF</tag>
+              </option>
+              <option value="doc2pdf">
+                <tag id="stepOneSelectDocPdf7">OpenOffice (odt, odp, ods) to PDF</tag>
+              </option>
 
-              <option class="separator" value="null" disabled>+ PDF COMPRESSION</option>
-              <option value="pdf2pdflow">Compress PDF (low quality)</option>
-              <option value="pdf2pdfmedium">Compress PDF (medium quality)</option>
-              <option value="pdf2pdfhigh">Compress PDF (high quality)</option>
+              <option class="separator" value="null" disabled>
+                <tag id="stepOneSelectPdfComp">+ PDF COMPRESSION</tag>
+              </option>
+              <option value="pdf2pdflow">
+                <tag id="stepOneSelectPdfComp1">Compress PDF (low quality)</tag>
+              </option>
+              <option value="pdf2pdfmedium">
+                <tag id="stepOneSelectPdfComp2">Compress PDF (medium quality)</tag>
+              </option>
+              <option value="pdf2pdfhigh">
+                <tag id="stepOneSelectPdfComp3">Compress PDF (high quality)</tag>
+              </option>
 
-              <option class="separator" value="null" disabled>+ PDF EXTRACTION</option>
-              <option value="pdf2extract">Extract images from PDF (1 file per image)</option>
-              <option value="pdf2txt">Extract text from PDF (txt format)</option>
+              <option class="separator" value="null" disabled>
+                <tag id="stepOneSelectPdfExtract">+ PDF EXTRACTION</tag>
+              </option>
+              <option value="pdf2extract">
+                <tag id="stepOneSelectPdfExtract1">Extract images from PDF (1 file per image)</tag>
+              </option>
+              <option value="pdf2txt">
+                <tag id="stepOneSelectPdfExtract2">Extract text from PDF (txt format)</tag>
+              </option>
 
-              <option class="separator" value="null" disabled>+ METADATA</option>
-              <option value="pdfmetaremove">Remove all metadata</option>
-              <option value="pdfmetaclone">Clone all metadata</option>
+              <option class="separator" value="null" disabled>
+                <tag id="stepOneSelectMeta">+ METADATA</tag>
+              </option>
+              <option value="pdfmetaremove">
+                <tag id="stepOneSelectMeta1">Remove all metadata</tag>
+              </option>
+              <option value="pdfmetaclone">
+                <tag id="stepOneSelectMeta2">Clone all metadata</tag>
+              </option>
 
-              <option class="separator" value="null" disabled>+ MISC</option>
-              <option value="pdf2pdfa">Convert to PDF/A</option>
-              <option value="pdf2split">Split PDF (1 PDF per page)</option>
-              <option value="pdf2detach">Detach/Save all embeded files in a PDF</option>
-              <option value="grayscalepic">Convert image file to grayscale</option>
-              <!--<option value="pdfstamp1">Embed watermark/stamp PDF (45º/grey)</option>-->
+              <option class="separator" value="null" disabled>
+                <tag id="stepOneSelectMisc">+ MISC</tag>
+              </option>
+              <option value="pdf2pdfa">
+                <tag id="stepOneSelectMisc1">Convert to PDF/A</tag>
+              </option>
+              <option value="pdf2split">
+                <tag id="stepOneSelectMisc2">Split PDF (1 PDF per page)</tag>
+              </option>
+              <option value="pdf2join" disabled hidden>
+                <tag id="stepOneSelectMisc6">Join PDF (inside folder)</tag>
+              </option>
+              <option value="pdf2detach">
+                <tag id="stepOneSelectMisc3">Detach/Save all embeded files in a PDF</tag>
+              </option>
+              <option value="grayscalepic">
+                <tag id="stepOneSelectMisc4">Convert image file to grayscale</tag>
+              </option>
+              <option value="pdfstamp1" disabled hidden>
+                <tag id="stepOneSelectMisc5">Embed watermark/stamp PDF (45º/grey)</tag>
+              </option>
 
-              <option class="separator" value="null" disabled>+ PDF TO (PDF/A + COMPRESSION)</option>
-              <option value="pdf2pdfalow">Compress and convert to PDF/A (low quality)</option>
-              <option value="pdf2pdfamedium">Compress and convert to PDF/A (medium quality)</option>
-              <option value="pdf2pdfahigh">Compress and convert to PDF/A (high quality)</option>
+              <option class="separator" value="null" disabled>
+                <tag id="stepOneSelectPdfa">+ PDF TO (PDF/A + COMPRESSION)</tag>
+              </option>
+              <option value="pdf2pdfalow">
+                <tag id="stepOneSelectPdfa1">Compress and convert to PDF/A (low quality)</tag>
+              </option>
+              <option value="pdf2pdfamedium">
+                <tag id="stepOneSelectPdfa2">Compress and convert to PDF/A (medium quality)</tag>
+              </option>
+              <option value="pdf2pdfahigh">
+                <tag id="stepOneSelectPdfa3">Compress and convert to PDF/A (high quality)</tag>
+              </option>
             </select>
           </div>
         </div>
         <label class="checkbox extended2" id="SOProcessFolderContainer">
-          <input type="checkbox" id="SOProcessFolderTickbox"> Process folder
+          <input type="checkbox" id="SOProcessFolderTickbox">
+          <tag id="stepOneSelectProcessFolder">Process folder</tag>
         </label>
       </div>
     </div>
     <div id="StepTwo">
       <div id="S2One" class="column">
-        <label id="S2OneLabel" class="label">2. Select file</label>
+        <label id="S2OneLabel" class="label">
+          <tag id="stepTwoLabel">2. Select file</tag>
+          <tag id="stepTwoLabel2" class="is-hidden">2. Select folder</tag>
+        </label>
         <a id="S2OneButton" class="button is-large box-shadow-5">
           <span class="icon is-large">
             <i class="fas fa-folder-open"></i>
           </span>
-          <span id="S2OneButtonLabel">Select file</span>
+          <span id="S2OneButtonLabel">
+            <tag id="stepTwoButtonLabel">Select file</tag>
+            <tag id="stepTwoButtonLabel2" class="is-hidden">Select folder</tag>
+          </span>
         </a>
       </div>
       <div id="S2Two" class="p2TextOr">
-        OR
+        <tag id="stepTwoOrLabel">OR</tag>
       </div>
       <div id="S2Three" class="column">
         <a id="S2ThreeButton" class="button is-large box-shadow-5">
-          <span id="S2ThreeButtonLabel">Drag file here</span>
+          <span id="S2ThreeButtonLabel">
+            <tag id="stepTwoDragLabel">Drag file here</tag>
+            <tag id="stepTwoDragLabel2" class="is-hidden">Drag folder here</tag>
+          </span>
           <span class="icon is-large">
             <i class="fas fa-file-import"></i>
           </span>
@@ -89,12 +192,18 @@
       </div>
     </div>
     <div id="StepThree" class="column is-hidden">
-      <label id="S3Label" class="label">3. Select target file</label>
+      <label id="S3Label" class="label">
+        <tag id="stepThreeLabel">3. Select target file</tag>
+        <tag id="stepThreeLabel2" class="is-hidden">3. Select target folder</tag>
+      </label>
       <a id="S3Button" class="button is-large box-shadow-5">
         <span class="icon is-large">
           <i class="fas fa-file"></i>
         </span>
-        <span id="S3ButtonLabel">Select file</span>
+        <span id="S3ButtonLabel">
+          <tag id="stepThreeButtonLabel">Select file</tag>
+          <tag id="stepThreeButtonLabel2" class="is-hidden">Select folder</tag>
+        </span>
       </a>
     </div>
   </div>
@@ -104,7 +213,9 @@
         <span class="icon">
           <i class="fas fa-file-export"></i>
         </span>
-        <span>Processing file...</span>
+        <span>
+          <tag id="processingFileLabel">Processing file...</tag>
+        </span>
       </button>
     </div>
     <!--
@@ -124,7 +235,9 @@
         <span class="icon">
           <i class="fas fa-file-export"></i>
         </span>
-        <span>Processing files...</span>
+        <span>
+          <tag id="processingFilesLabel">Processing files...</tag>
+        </span>
         <span id="MPLabel"></span>
       </button>
     </div>
@@ -135,7 +248,9 @@
         <span class="icon">
           <i class="fas fa-check"></i>
         </span>
-        <span>Processing finished</span>
+        <span>
+          <tag id="processingFinished">Processing finished</tag>
+        </span>
       </button>
     </div>
   </div>
@@ -145,7 +260,9 @@
         <span class="icon">
           <i class="fas fa-times"></i>
         </span>
-        <span>Error processing</span>
+        <span>
+          <tag id="processingFailed">Error processing</tag>
+        </span>
       </button>
     </div>
   </div>
