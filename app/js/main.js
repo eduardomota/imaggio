@@ -21,7 +21,8 @@ const {
 } = electron;
 
 var mainOptions = null,
-  currentExec = null;
+  currentExec = null,
+  currentLanguage = null;
 
 /*
   createWindow
@@ -74,7 +75,6 @@ function createWindow() {
 app.on('ready', () => {
   createWindow();
 
-
   /*
     .on('activate')
       On application activate
@@ -83,7 +83,6 @@ app.on('ready', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 });
-
 
 /*
   .on('window-all-closed')
@@ -105,17 +104,62 @@ ipcMain.on('convertpdf:killprocess', function(event) {
   sender.send('convertpdf:input.file.failure', 'error');
 });
 
+/*
+  .on('language:update')
+    On language update, update and load language file to variable
+ */
+ipcMain.on('language:update', function(event, updatedLanguage) {
+  var base = {
+      path: '/locale/',
+      defaultLanguage: 'en-US',
+      extension: '.json',
+      encoding: 'utf8'
+    },
+    languageContents = null;
+
+  base = {
+    ...base,
+    fullPath: path.join(
+      __dirname,
+      base.path,
+      `${updatedLanguage}${base.extension}`
+    ),
+    defaultPath: path.join(
+      __dirname,
+      base.path,
+      `${base.defaultLanguage}${base.extension}`
+    )
+  };
+
+  try {
+    languageContents = fs.readFileSync(base.fullPath, base.encoding);
+  } catch (err) {
+    languageContents = fs.readFileSync(base.defaultPath, base.encoding);
+  }
+
+  languageContents = JSON.parse(languageContents);
+
+  currentLanguage = {
+    lang: updatedLanguage,
+    contents: languageContents
+  };
+});
 
 /*
-  Input file processing
+  .on('convertpdf:input.file')
+    Input file processing
  */
 ipcMain.on('convertpdf:input.file', function(event) {
-
   if (mainOptions.conversionType === null) return;
 
+  var {
+    dialogSelectFile,
+    dialogSelectOpen
+  } = currentLanguage.contents;
+
   var filePath = dialog.showOpenDialogSync({
-    title: "Select file",
-    buttonLabel: "Open",
+    title: dialogSelectFile,
+    buttonLabel: dialogSelectOpen,
     properties: ['openFile', 'showHiddenFiles']
   });
 
@@ -133,14 +177,20 @@ ipcMain.on('convertpdf:input.file', function(event) {
 
 
 /*
-  clone file selection source
+  .on('convertpdf:input.file.clone')
+    Clone file selection source
  */
 ipcMain.on('convertpdf:input.file.clone', function(event) {
   if (mainOptions.conversionType === null) return;
 
+  var {
+    dialogSelectFile,
+    dialogSelectOpen
+  } = currentLanguage.contents;
+
   var filePath = dialog.showOpenDialogSync({
-    title: "Select file",
-    buttonLabel: "Open",
+    title: dialogSelectFile,
+    buttonLabel: dialogSelectOpen,
     properties: ['openFile', 'showHiddenFiles']
   });
 
@@ -160,12 +210,16 @@ ipcMain.on('convertpdf:input.file.clone', function(event) {
   Input folder processing
  */
 ipcMain.on('convertpdf:input.folder', function(event) {
-
   if (mainOptions.conversionType === null) return;
 
+  var {
+    dialogSelectFolder,
+    dialogSelectOpenFolder
+  } = currentLanguage.contents;
+
   var folderPath = dialog.showOpenDialogSync({
-    title: "Select folder",
-    buttonLabel: "Select",
+    title: dialogSelectFolder,
+    buttonLabel: dialogSelectOpenFolder,
     properties: ['openDirectory', 'showHiddenFiles']
   });
 
@@ -215,7 +269,7 @@ function convertPdf(file, event, isMassFileConvert = false) {
     sender
   } = event;
 
-  console.log(mainOptions.conversionType);
+  //console.log(mainOptions.conversionType);
   if (mainOptions.conversionType === null) return;
 
   console.log(mainOptions);
@@ -229,7 +283,8 @@ function convertPdf(file, event, isMassFileConvert = false) {
 
   let opts = getOptions();
 
-  if (mainOptions.hasOwnProperty('inputFile')) opts = { ...opts,
+  if (mainOptions.hasOwnProperty('inputFile')) opts = {
+    ...opts,
     inputFile: mainOptions.inputFile
   };
 
