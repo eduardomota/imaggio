@@ -24,6 +24,8 @@ function convertPdfFile(file, options) {
       executionOptions
     } = popplerVars;
 
+    console.log(4);
+
     currentExec = execFile(executable, arguments, executionOptions, (error, stdout, stderr) => {
       if (error) reject(error);
       resolve(stdout);
@@ -36,7 +38,6 @@ function convertPdfFile(file, options) {
     Compile executable path
  */
 function compileExecutablePath(options) {
-  var executable = null;
   var {
     cairo,
     text,
@@ -45,32 +46,28 @@ function compileExecutablePath(options) {
     extract,
     separate,
     detach
-  } = types;
+  } = types, {
+    format
+  } = options,
+  executable = null;
 
-  switch (options.format) {
-    case cairo:
-      executable = 'pdftocairo';
-      break;
-    case text:
-      executable = 'pdftotext';
-      break;
-    case html:
-      executable = 'pdftothtml';
-      break;
-    case ppm:
-      executable = 'pdftoppm';
-      break;
-    case extract:
-      executable = 'pdfimages';
-      break;
-    case separate:
-      executable = 'pdfseparate';
-      break;
-    case detach:
-      executable = 'pdfdetach';
-      break;
-    default:
-      executable = 'pdftocairo';
+  console.log(options.format);
+  console.log(types);
+
+  if (cairo.includes(format)) {
+    executable = 'pdftocairo';
+  } else if (text.includes(format)) {
+    executable = 'pdftotext';
+  } else if (ppm.includes(format)) {
+    executable = 'pdftoppm';
+  } else if (extract.includes(format)) {
+    executable = 'pdfimages';
+  } else if (separate.includes(format)) {
+    executable = 'pdfseparate';
+  } else if (detach.includes(format)) {
+    executable = 'pdfdetach';
+  } else {
+    executable = 'pdftocairo';
   }
 
   return path.join(popplerVars.path, executable);
@@ -158,7 +155,7 @@ function startupCheckOs() {
   var currentOs = os.platform(),
     supportedOs = 'win32';
 
-  if (currentOs !== 'win32') processQuit();
+  if (currentOs !== supportedOs) processQuit();
 }
 
 /*
