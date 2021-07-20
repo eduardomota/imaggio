@@ -18,6 +18,7 @@ The included binaries have been UPX (--ultra-brute) compressed for manageability
 
 - Local file manipulation
 - Open source, customizable to your needs
+- MIT Licensed, except third-party binaries
 - Better privacy, no tracking
 - Folder processing for bulk workloads
 - Single file processing
@@ -33,6 +34,9 @@ The included binaries have been UPX (--ultra-brute) compressed for manageability
 - Compress and convert to PDF/A (3 options)
 - Metadata (remove or clone from one to another)
 - Convert image file to gray scale
+- Application translation support via .json file
+  - en-US - American English, (default)
+  - pt-PT - Portugal Portuguese
 
 ### Planned features
 
@@ -59,7 +63,11 @@ A: No, this tool is meant for general, fast, major use case scenarios, if you wa
 
 Q: Why can't i drop a file on "clone metadata" option?
 
-A: To not mess up source and target file metadata, this is by design and is not meant to be changed.
+A: To be clear you've selected either source or target file, this is by design.
+
+Q: How can i change the language?
+
+A: You can't, language is detected at application startup, defaults to `en-US` locale. However you can contribute with a translation from `en-US`to another locale, you can find the base file inside `app/js/locale/en-US.json`.
 
 ## Quick Start
 
@@ -71,7 +79,7 @@ Files used in the application will not be modified, the output files will have `
 
 ### Notes on scripts
 
-These executable files inside the `scripts` folder are meant to launch or kill imaggio easily, used just for debugging/testing purposes. We're made with AutoIt and are decompilable.
+These executable files inside the `scripts` folder are meant to launch or kill imaggio easily, used just for debugging/testing purposes. We're made with AutoIt and are decompilable, source inside `app/etc`.
 
 ### Latest built binary
 
