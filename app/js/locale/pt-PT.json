@@ -61,5 +61,9 @@
   "processingFileLabel": "A processar ficheiro...",
   "processingFilesLabel": "A processar ficheiros...",
   "processingFinished": "Processamento finalizou",
-  "processingFailed": "Processamento falhou"
+  "processingFailed": "Processamento falhou",
+  "dialogSelectFile": "Selecionar ficheiro",
+  "dialogSelectFolder": "Selecionar pasta",
+  "dialogSelectOpen": "Abrir",
+  "dialogSelectOpenFolder": "Selecionar"
 }

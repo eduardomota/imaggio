@@ -61,5 +61,9 @@
   "processingFileLabel": "Processing file...",
   "processingFilesLabel": "Processing files...",
   "processingFinished": "Processing finished",
-  "processingFailed": "Processing Failed"
+  "processingFailed": "Processing Failed",
+  "dialogSelectFile": "Select file",
+  "dialogSelectFolder": "Select folder",
+  "dialogSelectOpen": "Open",
+  "dialogSelectOpenFolder": "Select"
 }
