@@ -113,6 +113,12 @@ Imaggio uses electron-packager for builds.
 electron-packager . imaggio --overwrite --platform=win32 --arch=ia32 --icon=app/icons/app.ico --prune=true --out=release_builds --version-string.CompanyName=\"\" --version-string.FileDescription=\"NAME\" --version-string.ProductName=\"PRODUCTNAME\""
 ```
 
+or 
+
+```
+npm run build
+```
+
 ## Built with
 
 <a href="https://electronjs.org/"><img height=40px src="https://electronjs.org/images/electron-logo.svg"></a>
