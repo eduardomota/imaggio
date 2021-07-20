@@ -2,9 +2,9 @@
 
 ![Imaggio app](https://github.com/whois-team/imaggio/raw/main/screenshot.png)  
 
-Imaggio is an open source, windows desktop application built on Electron. Handles conversion, compression, slice and dice in multiple ways with PDFs in mind. If you ever thought about the privacy and data security concerns regarding use of online converters, wonder no more, Imaggio does all the PDF slice and dice locally. This is meant to be a simple intuitive application for any user.
+Imaggio is an open source file manipulation tool, windows desktop application built on Electron. Handles conversion, compression, slice and dice in multiple ways geared towards PDF files. If you ever thought about the privacy and data security implications regarding use of online converters, wonder no more, Imaggio does all the PDF slice and dice on your machine. This is meant to be a simple intuitive application for any user. Select your action, select/drag n'drop your file and done.
 
-This application is basically a GUI for several different binaries that interact with PDF files, these binaries are `Ghostscript`, `ImageMagick`, `OfficeToPdf`, `Poppler`, `qpdf`, `pandoc` and `exiftool`. They're not all in use but they maybe used in some way in the future and that's why they're there.
+This application is mostly a GUI for several different binaries that interact with (but not limited to) PDF files, these binaries are `Ghostscript`, `ImageMagick`, `OfficeToPdf`, `Poppler`, `qpdf`, `pandoc` and `exiftool`. They're not all in use but they maybe used in some way in the future and that's why they're there.
 
 ## Requirements
 
@@ -14,26 +14,35 @@ Imaggio is a standalone application that only requires Microsoft Office for "doc
 
 The included binaries have been UPX (--ultra-brute) compressed for manageability. If that does not suit your use case for some specific reason there are mirror repositories of these binaries on github.
 
+Purpose of the binaries
+
+- `ghostscript` is used for compression tasks and pdfa conversion
+- `poppler` is used for PDF to graphic formats conversions, extractions, split and detach
+- `officetopdf` is used for document to pdf conversions
+- `imagemagick` is used for image to grayscale
+- `exiftool` is used for metadata manipulation
+
 ## Features
 
-- Local file manipulation
 - Open source, customizable to your needs
 - MIT Licensed, except third-party binaries
+- Local file manipulation
 - Better privacy, no tracking
-- Folder processing for bulk workloads
 - Single file processing
-- PDF to JPEG (3 options)
-- PDF to PNG (3 options)
-- PDF to SVG
-- Document to PDF [Word, Excel, PowerPoint, etc...] (7 options)
-- Compress PDF (3 options)
-- Split PDF, 1 PDF per page
-- Extract images from PDF, 1 file per image
-- Extract text from PDF, .txt format
-- Convert to PDF/A
-- Compress and convert to PDF/A (3 options)
-- Metadata (remove or clone from one to another)
-- Convert image file to gray scale
+- Folder processing for bulk workloads
+- Array of common manipulation tasks available
+  - PDF to JPEG (low, medium, high)
+  - PDF to PNG (low, medium, high)
+  - PDF to SVG
+  - Document to PDF [Word, Excel, PowerPoint, etc...] (7 options)
+  - Compress PDF (low, medium, high)
+  - Split PDF, 1 PDF per page
+  - Extract images from PDF, 1 file per image
+  - Extract text from PDF, .txt format
+  - Convert to PDF/A
+  - Compress and convert to PDF/A (3 options)
+  - Metadata (remove or clone from one to another)
+  - Image file to grayscale
 - Application translation support via .json file
   - en-US - American English, (default)
   - pt-PT - Portugal Portuguese
@@ -79,7 +88,7 @@ Files used in the application will not be modified, the output files will have `
 
 ### Notes on scripts
 
-These executable files inside the `scripts` folder are meant to launch or kill imaggio easily, used just for debugging/testing purposes. We're made with AutoIt and are decompilable, source inside `app/etc`.
+These executable files inside the `scripts` folder are meant to launch or kill imaggio easily, used just for debugging/testing purposes. Were made with AutoIt and are decompilable, source inside `app/etc`.
 
 ### Latest built binary
 
