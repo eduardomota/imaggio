@@ -31,7 +31,8 @@ function convertPdfFile(file, options) {
  */
 function compileExecutablePath(options) {
   var executableName = 'gswin32c';
-  var executable = path.join(ghostscriptVars.path, executable);
+  console.log(ghostscriptVars.path);
+  var executable = path.join(ghostscriptVars.path, executableName);
 
   return executable;
 }
