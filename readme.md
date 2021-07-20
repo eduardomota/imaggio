@@ -6,6 +6,16 @@ Imaggio is an open source file manipulation tool, windows desktop application bu
 
 This application is mostly a GUI for several different binaries that interact with (but not limited to) PDF files, these binaries are `Ghostscript`, `ImageMagick`, `OfficeToPdf`, `Poppler`, `qpdf`, `pandoc` and `exiftool`. They're not all in use but they maybe used in some way in the future and that's why they're there.
 
+## Index
+
+- [Requirements](#requirements)
+- [Notes on binaries](#notes-on-binaries)
+- [Features](#features)
+- [Quick Start](#quick-start)
+- [Building](#building)
+- [Built With](#built-with)
+- [License](#license)
+
 ## Requirements
 
 Imaggio is a standalone application that only requires Microsoft Office for "document to PDF" conversions. If you don't need these type of conversions there's no other specific requirement.
