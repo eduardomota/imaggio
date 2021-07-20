@@ -1,7 +1,7 @@
 {
   "name": "imaggio",
-  "version": "1.0.0",
-  "description": "Convert PDF to JPEG",
+  "version": "1.0.1",
+  "description": "PDF manipulation tool",
   "main": "./app/js/main.js",
   "scripts": {
     "start": "electron .",
