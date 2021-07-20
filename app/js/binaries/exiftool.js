@@ -64,7 +64,7 @@ function compileArguments(file, options) {
 
   if (options.action.includes('remove')) { // Remove all metadata from file
     arguments.push(`-all=`);
-    arguments.push(`${file}`);
+    arguments.push(`"${file}"`);
   }
 
   return arguments;
