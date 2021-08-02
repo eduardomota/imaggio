@@ -15,7 +15,7 @@ var ghostscriptVars = getGhostscriptVars();
  */
 function convertPdfFile(file, options) {
   return new Promise((resolve, reject) => {
-    var executable = compileExecutablePath(options),
+    var executable = compileExecutablePath(),
       arguments = compileArguments(file, options);
 
     currentExec = execFile(executable, arguments, (error, stdout, stderr) => {
@@ -29,24 +29,27 @@ function convertPdfFile(file, options) {
   compileExecutablePath
     Compiles executable path
  */
-function compileExecutablePath(options) {
-  var executable = 'gswin64c';
+function compileExecutablePath() {
+  var executableName = 'gswin64c';
+  var executable = path.join(ghostscriptVars.path, executableName);
 
-  return path.join(ghostscriptVars.path, executable);
+  return executable;
 }
 
 /*
   compileArguments
-    Compile arguments
+    Compiles arguments for ghostscript executable
  */
 function compileArguments(file, options) {
   var options = { ...options,
-    outputDirectory: options.outputDirectory ? options.outputDirectory : path.dirname(file),
-    outputFile: options.outputFile ? options.outputFile : path.basename(file, path.extname(file))
-  };
-  var arguments = [],
-    outputFile = path.join(options.outputDirectory, options.outputFile);
+      outputDirectory: options.outputDirectory ?
+        options.outputDirectory : path.dirname(file),
+      outputFile: options.outputFile ?
+        options.outputFile : path.basename(file, path.extname(file))
+    },
+    arguments = [];
 
+  // PDFA conversion
   if (options.format.includes('pdfa')) {
     arguments.push(`-dPDFA`);
     arguments.push(`-dBATCH`);
@@ -57,17 +60,16 @@ function compileArguments(file, options) {
     arguments.push(`-sDEVICE=pdfwrite`);
     arguments.push(`-sPDFACompatibilityPolicy=1`);
     arguments.push(`-sOutputFile="${path.join(options.outputDirectory, options.outputFile)}_pdfa.pdf"`);
-    arguments.push(`${file}`);
-
-    return arguments;
+  } else {
+    // Compress PDF
+    arguments.push(`-sDEVICE=pdfwrite`);
+    arguments.push(`-dCompatibilityLevel=1.4`);
+    if (options.pdfSettings) arguments.push(`-dPDFSETTINGS=/${options.pdfSettings}`);
+    arguments.push(`-dNOPAUSE`);
+    arguments.push(`-dBATCH`);
+    arguments.push(`-sOutputFile="${path.join(options.outputDirectory, options.outputFile)}_min.pdf"`);
   }
 
-  arguments.push(`-sDEVICE=pdfwrite`);
-  arguments.push(`-dCompatibilityLevel=1.4`);
-  if (options.pdfSettings) arguments.push(`-dPDFSETTINGS=/${options.pdfSettings}`);
-  arguments.push(`-dNOPAUSE`);
-  arguments.push(`-dBATCH`);
-  arguments.push(`-sOutputFile="${path.join(options.outputDirectory, options.outputFile)}_min.pdf"`);
   arguments.push(`${file}`);
 
   return arguments;
@@ -81,7 +83,7 @@ function startupCheckOs() {
   var currentOs = os.platform(),
     supportedOs = 'win32';
 
-  if (currentOs !== 'win32') processQuit();
+  if (currentOs !== supportedOs) processQuit();
 }
 
 /*

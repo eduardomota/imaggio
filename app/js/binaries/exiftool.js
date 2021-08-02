@@ -15,7 +15,7 @@ var exiftoolVars = getExiftoolVars();
  */
 function convertFile(file, options) {
   return new Promise((resolve, reject) => {
-    var executable = compileExecutablePath(options),
+    var executable = compileExecutablePath(),
       arguments = compileArguments(file, options);
     var {
       executionOptions
@@ -34,9 +34,9 @@ function convertFile(file, options) {
   compileExecutablePath
     Compiles executable path
  */
-function compileExecutablePath(options) {
+function compileExecutablePath() {
   var executableName = 'exiftool';
-  executable = path.join(exiftoolVars.path, executableName);
+  var executable = path.join(exiftoolVars.path, executableName);
 
   return executable;
 }
@@ -47,11 +47,10 @@ function compileExecutablePath(options) {
  */
 function compileArguments(file, options) {
   var options = { ...options,
-    outputDirectory: options.outputDirectory ? options.outputDirectory : path.dirname(file),
-    outputFile: options.outputFile ? options.outputFile : path.basename(file, path.extname(file))
-  };
-  var arguments = [],
-    outputFile = path.join(options.outputDirectory, options.outputFile);
+      outputDirectory: options.outputDirectory ? options.outputDirectory : path.dirname(file),
+      outputFile: options.outputFile ? options.outputFile : path.basename(file, path.extname(file))
+    },
+    arguments = [];
 
   if (options.action.includes('clone')) { // Clone metadata from file to file
     var sourceFile = options.inputFile,
@@ -78,7 +77,7 @@ function startupCheckOs() {
   var currentOs = os.platform(),
     supportedOs = 'win32';
 
-  if (currentOs !== 'win32') processQuit();
+  if (currentOs !== supportedOs) processQuit();
 }
 
 /*

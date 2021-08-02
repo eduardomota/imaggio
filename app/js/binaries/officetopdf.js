@@ -15,7 +15,7 @@ var officetopdfVars = getOfficetopdfVars();
  */
 function convertPdfFile(file, options) {
   return new Promise((resolve, reject) => {
-    var executable = compileExecutablePath(options),
+    var executable = compileExecutablePath(),
       arguments = compileArguments(file, options);
 
     currentExec = execFile(executable, arguments, (error, stdout, stderr) => {
@@ -29,7 +29,7 @@ function convertPdfFile(file, options) {
   compileExecutablePath
     Compile executable path
  */
-function compileExecutablePath(options) {
+function compileExecutablePath() {
   var executableName = 'officetopdf';
   var executable = path.join(officetopdfVars.path, executableName)
 
@@ -41,18 +41,20 @@ function compileExecutablePath(options) {
     Compile file and options into a command line usable arguments
  */
 /*
-*/
+ */
 function compileArguments(file, options) {
   var options = { ...options,
-    outputDirectory: options.outputDirectory ? options.outputDirectory : path.dirname(file),
-    outputFile: options.outputFile ? options.outputFile : path.basename(file, path.extname(file))
-  };
-  var arguments = [],
-    outputFile = path.join(options.outputDirectory, options.outputFile);
+      outputDirectory: options.outputDirectory ?
+        options.outputDirectory : path.dirname(file),
+      outputFile: options.outputFile ?
+        options.outputFile : path.basename(file, path.extname(file))
+    },
+    arguments = [];
+  var outputFile = path.join(options.outputDirectory, options.outputFile);
 
-  arguments.push(`/bookmarks`);   // Add bookmarks when possible
+  arguments.push(`/bookmarks`); // Add bookmarks when possible
   arguments.push(`/print`); // Make it print ready
-  arguments.push(`/hidden`);  // Try to hide Office application
+  arguments.push(`/hidden`); // Try to hide Office application
   arguments.push(`${file}`); // Input file
   arguments.push(`${outputFile}.pdf`); // Output file (pdf file)
 
@@ -67,7 +69,7 @@ function startupCheckOs() {
   var currentOs = os.platform(),
     supportedOs = 'win32';
 
-  if (currentOs !== 'win32') processQuit();
+  if (currentOs !== supportedOs) processQuit();
 }
 
 /*

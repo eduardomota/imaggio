@@ -31,9 +31,8 @@ function convertPdfFile(file, options) {
   compileExecutablePath
     Compiles executable path
  */
-function compileExecutablePath(options) {
+function compileExecutablePath() {
   var executableName = 'gswin32c';
-  console.log(ghostscriptVars.path);
   var executable = path.join(ghostscriptVars.path, executableName);
 
   return executable;
@@ -83,7 +82,7 @@ function startupCheckOs() {
   var currentOs = os.platform(),
     supportedOs = 'win32';
 
-  if (currentOs !== 'win32') processQuit();
+  if (currentOs !== supportedOs) processQuit();
 }
 
 /*

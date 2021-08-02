@@ -5,9 +5,6 @@ const {
   exec
 } = require('child_process');
 
-// dosPath conversion
-const dosPath = require('./dospath');
-
 // Startup routine
 startupCheckOs();
 var popplerVars = getPopplerVars();
@@ -19,16 +16,13 @@ var popplerVars = getPopplerVars();
 function convertPdfFile(file, options) {
   return new Promise((resolve, reject) => {
     var executable = compileExecutablePath(options),
-      arguments = compileArguments(file, options);
-    var {
-      executionOptions
-    } = popplerVars;
+      arguments = compileArguments(file, options),
+      {
+        executionOptions
+      } = popplerVars;
 
-    console.log(4);
-
+    // Join executable arguments
     executable = `${executable} ${arguments.join(' ')}`;
-
-    console.log("TEST", executable);
 
     currentExec = exec(executable, executionOptions, (error, stdout, stderr) => {
       if (error) reject(error);
@@ -53,30 +47,29 @@ function compileExecutablePath(options) {
   } = types, {
     format
   } = options,
-  executable = null;
-
-  console.log(options.format);
-  console.log(types);
+  executableName = null;
 
   if (cairo.includes(format)) {
-    executable = 'pdftocairo';
+    executableName = 'pdftocairo';
   } else if (text.includes(format)) {
-    executable = 'pdftotext';
+    executableName = 'pdftotext';
   } else if (html.includes(format)) {
-    executable = 'pdftohtml';
+    executableName = 'pdftohtml';
   } else if (ppm.includes(format)) {
-    executable = 'pdftoppm';
+    executableName = 'pdftoppm';
   } else if (extract.includes(format)) {
-    executable = 'pdfimages';
+    executableName = 'pdfimages';
   } else if (separate.includes(format)) {
-    executable = 'pdfseparate';
+    executableName = 'pdfseparate';
   } else if (detach.includes(format)) {
-    executable = 'pdfdetach';
+    executableName = 'pdfdetach';
   } else {
-    executable = 'pdftocairo';
+    executableName = 'pdftocairo';
   }
 
-  return path.join(popplerVars.path, executable);
+  executable = path.join(popplerVars.path, executableName);
+
+  return executable;
 }
 
 /*
@@ -101,15 +94,17 @@ options = {
 function compileArguments(file, options) {
   var outputDir = path.dirname(file);
   var options = { ...options,
-      outputDirectory: options.outputDirectory ? options.outputDirectory : outputDir,
-      outputFile: options.outputFile ? options.outputFile : path.basename(file, path.extname(file))
+      outputDirectory: options.outputDirectory ?
+        options.outputDirectory : outputDir,
+      outputFile: options.outputFile ?
+        options.outputFile : path.basename(file, path.extname(file))
     },
     {
       excludedFormats,
       types
     } = popplerVars,
-    arguments = [],
-    outputFile = path.join(options.outputDirectory, options.outputFile);
+    arguments = [];
+  var outputFile = path.join(options.outputDirectory, options.outputFile);
 
   // Cairo format
   if (types.cairo.includes(options.format))
@@ -263,13 +258,34 @@ function getPopplerVarsDefaultOptions() {
  */
 function getPopplerVarsDefaultTypes() {
   return types = {
-    cairo: ['png', 'jpeg', 'svg', 'pdf', 'ps', 'eps'],
-    ppm: ['ppm', 'tiff'],
-    text: ['txt', 'text'],
-    html: ['html'],
-    extract: ['extract'],
-    separate: ['separate'],
-    detach: ['detach']
+    cairo: [
+      'png',
+      'jpeg',
+      'svg',
+      'pdf',
+      'ps',
+      'eps'
+    ],
+    ppm: [
+      'ppm',
+      'tiff'
+    ],
+    text: [
+      'txt',
+      'text'
+    ],
+    html: [
+      'html'
+    ],
+    extract: [
+      'extract'
+    ],
+    separate: [
+      'separate'
+    ],
+    detach: [
+      'detach'
+    ]
   };
 }
 
@@ -278,7 +294,16 @@ function getPopplerVarsDefaultTypes() {
     Gets default poppler excluded formats to exclude -format from command line
  */
 function getPopplerVarsExcludedFormats() {
-  return ['extract', 'separate', 'html', 'detach', 'ppm', 'tiff'];
+  var excludedFormats = [
+    'extract',
+    'separate',
+    'html',
+    'detach',
+    'ppm',
+    'tiff'
+  ];
+
+  return excludedFormats;
 }
 
 module.exports = {
