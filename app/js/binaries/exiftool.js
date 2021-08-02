@@ -16,10 +16,10 @@ var exiftoolVars = getExiftoolVars();
 function convertFile(file, options) {
   return new Promise((resolve, reject) => {
     var executable = compileExecutablePath(),
-      arguments = compileArguments(file, options);
-    var {
-      executionOptions
-    } = exiftoolVars;
+      arguments = compileArguments(file, options),
+      {
+        executionOptions
+      } = exiftoolVars;
 
     executable = `${executable} ${arguments.join(' ')}`;
 
@@ -47,8 +47,10 @@ function compileExecutablePath() {
  */
 function compileArguments(file, options) {
   var options = { ...options,
-      outputDirectory: options.outputDirectory ? options.outputDirectory : path.dirname(file),
-      outputFile: options.outputFile ? options.outputFile : path.basename(file, path.extname(file))
+      outputDirectory: options.outputDirectory ?
+        options.outputDirectory : path.dirname(file),
+      outputFile: options.outputFile ?
+        options.outputFile : path.basename(file, path.extname(file))
     },
     arguments = [];
 

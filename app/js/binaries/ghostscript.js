@@ -44,11 +44,12 @@ function compileExecutablePath() {
  */
 function compileArguments(file, options) {
   var options = { ...options,
-    outputDirectory: options.outputDirectory ? options.outputDirectory : path.dirname(file),
-    outputFile: options.outputFile ? options.outputFile : path.basename(file, path.extname(file))
-  };
-  var arguments = [],
-    outputFile = path.join(options.outputDirectory, options.outputFile);
+      outputDirectory: options.outputDirectory ?
+        options.outputDirectory : path.dirname(file),
+      outputFile: options.outputFile ?
+        options.outputFile : path.basename(file, path.extname(file))
+    },
+    arguments = [];
 
   if (options.format.includes('pdfa')) { // PDF/A CONVERSION
     arguments.push(`-dPDFA`); // PDFA format
