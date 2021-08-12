@@ -42,6 +42,7 @@
   "stepOneSelectMisc3": "Detach/Save all embeded files in a PDF",
   "stepOneSelectMisc4": "Convert image file to grayscale",
   "stepOneSelectMisc5": "Embed watermark/stamp PDF (45º/grey)",
+  "stepOneSelectMisc6": "Join/Merge PDFs (inside folder)",
   "stepOneSelectPdfa": "+ PDF TO (PDF/A + COMPRESSION)",
   "stepOneSelectPdfa1": "Compress and convert to PDF/A (low quality)",
   "stepOneSelectPdfa2": "Compress and convert to PDF/A (medium quality)",

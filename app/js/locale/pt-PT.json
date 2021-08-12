@@ -42,6 +42,7 @@
   "stepOneSelectMisc3": "Desanexar/Guardar todos os ficheiro num PDF",
   "stepOneSelectMisc4": "Converter imagem para escala de cinza",
   "stepOneSelectMisc5": "Embeber marca d'água/carimbo PDF (45º/cinza)",
+  "stepOneSelectMisc6": "Juntar PDF (dentro de pasta)",
   "stepOneSelectPdfa": "+ PDF PARA (PDF/A + COMPRESSÃO)",
   "stepOneSelectPdfa1": "Comprimir e converter para PDF/A (baixa qualidade)",
   "stepOneSelectPdfa2": "Comprimir e converter para PDF/A (qualidade média)",
