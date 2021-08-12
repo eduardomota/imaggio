@@ -28,9 +28,7 @@
 
   // Dynamically load, property
   for (var property in fullPath) {
-    if (fullPath.hasOwnProperty(property)) {
-      $(`#${property}`).load(fullPath[property]);
-    }
+    if (fullPath.hasOwnProperty(property)) $(`#${property}`).load(fullPath[property]);
   }
 
   return;
