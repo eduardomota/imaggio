@@ -1,6 +1,5 @@
 const electron = require('electron'),
   path = require('path'),
-  url = require('url'),
   debug = require('debug')('main'),
   debugb = require('debug')('renderer'),
   fs = require('fs'),
@@ -14,10 +13,8 @@ const electron = require('electron'),
 const {
   app,
   BrowserWindow,
-  Menu,
   ipcMain,
-  dialog,
-  remote
+  dialog
 } = electron;
 
 var mainOptions = null,
@@ -29,7 +26,22 @@ var mainOptions = null,
     Creates and loads window
  */
 function createWindow() {
-  const windowHandle = new BrowserWindow({
+  const windowHandle = new BrowserWindow(
+    getBrowserWindowParameters()
+  );
+
+  windowHandle.loadFile('./app/html/mainPanel.html');
+  windowHandle.once('ready-to-show', function() {
+    windowHandle.show();
+  });
+
+}
+
+/*
+  getBrowserWindowParameters
+ */
+function getBrowserWindowParameters() {
+  var browserWindowParameters = {
     frame: false, // Is basic frame shown (default: false)
     show: false, // Show app before load (default: false)
     height: 550, // Window height in pixels (default: 700)
@@ -59,13 +71,9 @@ function createWindow() {
       spellcheck: false, // Enable builtin spellchecker
       enableRemoteModule: true // Enable remote module
     }
-  });
+  };
 
-  windowHandle.loadFile('./app/html/mainPanel.html');
-  windowHandle.once('ready-to-show', () => {
-    windowHandle.show()
-  });
-
+  return browserWindowParameters;
 }
 
 /*
@@ -74,28 +82,36 @@ function createWindow() {
  */
 app.on('ready', () => {
   createWindow();
+  onActivate();
+});
 
+/*
+  onActivate
+ */
+function onActivate() {
   /*
     .on('activate')
       On application activate
    */
   app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    if (BrowserWindow.getAllWindows().length === 0)
+      createWindow();
   });
-});
+
+}
 
 /*
   .on('window-all-closed')
     On application window closed
  */
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
+  if (process.platform !== 'darwin')
+    app.quit();
 });
 
 // Update Current conversion options
 ipcMain.on('convertpdf:updateoptions', function(event, updatedOptions) {
   mainOptions = updatedOptions;
-  console.log(mainOptions);
 });
 
 // Kill process
@@ -109,48 +125,76 @@ ipcMain.on('convertpdf:killprocess', function(event) {
     On language update, update and load language file to variable
  */
 ipcMain.on('language:update', function(event, updatedLanguage) {
-  var base = {
-      path: '/locale/',
-      defaultLanguage: 'en-US',
-      extension: '.json',
-      encoding: 'utf8'
-    },
+  var languagePath = getLanguagePath(),
     languageContents = null;
 
-  base = {
-    ...base,
-    fullPath: path.join(
-      __dirname,
-      base.path,
-      `${updatedLanguage}${base.extension}`
-    ),
-    defaultPath: path.join(
-      __dirname,
-      base.path,
-      `${base.defaultLanguage}${base.extension}`
-    )
-  };
+  languagePath = getLanguageFullPath(languagePath, updatedLanguage);
 
   try {
-    languageContents = fs.readFileSync(base.fullPath, base.encoding);
+    languageContents = fs.readFileSync(languagePath.fullPath, languagePath.encoding);
   } catch (err) {
-    languageContents = fs.readFileSync(base.defaultPath, base.encoding);
+    languageContents = fs.readFileSync(languagePath.defaultPath, languagePath.encoding);
   }
 
   languageContents = JSON.parse(languageContents);
+  currentLanguage = getCurrentLanguage(updatedLanguage, languageContents);
+});
 
-  currentLanguage = {
+/*
+  getCurrentLanguage
+ */
+function getCurrentLanguage(updatedLanguage, languageContents) {
+  var currentLanguage = {
     lang: updatedLanguage,
     contents: languageContents
   };
-});
+
+  return currentLanguage;
+}
+
+
+/*
+  getLanguagePath
+ */
+function getLanguagePath() {
+  var languagePath = {
+    path: '/locale/',
+    defaultLanguage: 'en-US',
+    extension: '.json',
+    encoding: 'utf8'
+  };
+
+  return languagePath;
+}
+
+/*
+  getLanguageFullPath
+ */
+function getLanguageFullPath(languagePath, updatedLanguage) {
+  var languageFullPath = {
+    ...languagePath,
+    fullPath: path.join(
+      __dirname,
+      languagePath.path,
+      `${updatedLanguage}${languagePath.extension}`
+    ),
+    defaultPath: path.join(
+      __dirname,
+      languagePath.path,
+      `${languagePath.defaultLanguage}${languagePath.extension}`
+    )
+  };
+
+  return languageFullPath;
+}
 
 /*
   .on('convertpdf:input.file')
     Input file processing
  */
 ipcMain.on('convertpdf:input.file', function(event) {
-  if (mainOptions.conversionType === null) return;
+  if (mainOptions.conversionType === null)
+    return;
 
   var {
     dialogSelectFile,
@@ -167,10 +211,10 @@ ipcMain.on('convertpdf:input.file', function(event) {
     sender
   } = event;
 
-  if (filePath === undefined || filePath == '' || filePath === null) return;
+  if (filePath === undefined || filePath == '' || filePath === null)
+    return;
 
-  console.log(`Selected file path OK: ${filePath}`);
-  let file = `${filePath[0]}`;
+  var file = `${filePath[0]}`;
 
   convertPdf(file, event);
 });
@@ -181,7 +225,8 @@ ipcMain.on('convertpdf:input.file', function(event) {
     Clone file selection source
  */
 ipcMain.on('convertpdf:input.file.clone', function(event) {
-  if (mainOptions.conversionType === null) return;
+  if (mainOptions.conversionType === null)
+    return;
 
   var {
     dialogSelectFile,
@@ -198,10 +243,10 @@ ipcMain.on('convertpdf:input.file.clone', function(event) {
     sender
   } = event;
 
-  if (filePath === undefined || filePath == '' || filePath === null) return;
+  if (filePath === undefined || filePath == '' || filePath === null)
+    return;
 
-  console.log(`Selected file path OK: ${filePath}`);
-  let file = `${filePath[0]}`;
+  var file = `${filePath[0]}`;
 
   mainOptions.inputFile = file;
 });
@@ -210,7 +255,8 @@ ipcMain.on('convertpdf:input.file.clone', function(event) {
   Input folder processing
  */
 ipcMain.on('convertpdf:input.folder', function(event) {
-  if (mainOptions.conversionType === null) return;
+  if (mainOptions.conversionType === null)
+    return;
 
   var {
     dialogSelectFolder,
@@ -227,21 +273,20 @@ ipcMain.on('convertpdf:input.folder', function(event) {
     sender
   } = event;
 
-  if (folderPath === undefined || folderPath == '' || folderPath === null) return;
+  if (folderPath === undefined || folderPath == '' || folderPath === null)
+    return;
 
-  console.log(`Selected folder path OK: ${folderPath}`);
-  let folder = folderPath[0];
-  let fileList = fs.readdirSync(folder);
-  let numFiles = fileList.length;
+  var folder = folderPath[0];
+  var fileList = fs.readdirSync(folder);
+  var numFiles = fileList.length;
 
   fileList.forEach(function(filename, i) {
     var filePath = folder + '\\' + filename;
     var progress = (i + 1) + '/' + numFiles;
-    console.log(filePath);
-    console.log(progress);
     sender.send('convertpdf:input.folder.converting', progress);
     convertPdf(filePath, event, true);
   });
+
   sender.send('convertpdf:input.file.success');
 });
 
@@ -253,11 +298,10 @@ ipcMain.on('convertpdf:input.folder', function(event) {
     filePath (string) - dropped file path
  */
 ipcMain.on('convertpdf:drag.file', function(event, filePath) {
+  if (mainOptions.conversionType === null)
+    return;
 
-  if (mainOptions.conversionType === null) return;
-
-  console.log(`Dragged file path OK: ${filePath}`);
-  let file = filePath;
+  var file = filePath;
   convertPdf(file, event);
 });
 
@@ -269,93 +313,53 @@ function convertPdf(file, event, isMassFileConvert = false) {
     sender
   } = event;
 
-  //console.log(mainOptions.conversionType);
-  if (mainOptions.conversionType === null) return;
+  if (mainOptions.conversionType === null)
+    return;
 
-  console.log(mainOptions);
-
-  if (isMassFileConvert == false) sender.send('convertpdf:input.file.converting');
+  if (isMassFileConvert == false)
+    sender.send('convertpdf:input.file.converting');
 
   sender.startDrag({
     file: file,
     icon: app.getAppPath() + '/app/jpg/icon.jpg'
   });
 
-  let opts = getOptions();
+  var options = getOptions();
 
-  if (mainOptions.hasOwnProperty('inputFile')) opts = {
-    ...opts,
-    inputFile: mainOptions.inputFile
-  };
+  var execute = getExecutable(options);
 
-  console.log(mainOptions);
-  console.log(opts);
+  execute.convert(file, opts)
+    .then((res) => {
+      console.log(`Successfully converted file`);
+      sender.send('convertpdf:input.file.success');
+    })
+    .catch((error) => {
+      console.log(`Failed to convert with error: ${error.stack}`);
+      sender.send('convertpdf:input.file.failure', error);
+    });
+}
+
+/*
+  getExecutable
+ */
+function getExecutable(options) {
+  var execute = null;
 
   if (opts.action === 'grayscale') {
-    imagemagick.convert(file, opts)
-      .then((res) => {
-        console.log(`Successfully converted file`);
-        sender.send('convertpdf:input.file.success');
-      })
-      .catch((error) => {
-        console.log(`Failed to convert with error: ${error.stack}`);
-        sender.send('convertpdf:input.file.failure', error);
-      });
+    execute = imagemagick;
   } else if (opts.format === 'pdf' && opts.action === 'doc2pdf') {
-    officeToPdf.convert(file, opts)
-      .then((res) => {
-        console.log(`Successfully converted file`);
-        sender.send('convertpdf:input.file.success');
-      })
-      .catch((error) => {
-        console.log(`Failed to convert with error: ${error.stack}`);
-        sender.send('convertpdf:input.file.failure', error);
-      });
+    execute = officeToPdf;
   } else if (opts.format === 'pdf' && opts.action === 'stamp') {
-
+    execute = pdfStamper;
   } else if ((opts.format === 'pdf' && mainOptions !== 'splitpdf') || opts.format === 'pdfa') {
-    pdfGhostscript.convert(file, opts)
-      .then((res) => {
-        console.log(`Successfully converted file`);
-        sender.send('convertpdf:input.file.success');
-      })
-      .catch((error) => {
-        console.log(`Failed to convert with error: ${error.stack}`);
-        sender.send('convertpdf:input.file.failure', error);
-      });
-  } else if (opts.action === 'pdfmetaremove') {
-    exiftool.convert(file, opts)
-      .then((res) => {
-        console.log(`Successfully converted file`);
-        sender.send('convertpdf:input.file.success');
-      })
-      .catch((error) => {
-        console.log(`Failed to convert with error: ${error.stack}`);
-        sender.send('convertpdf:input.file.failure', error);
-      });
-  } else if (opts.action === 'pdfmetaclone') {
-    exiftool.convert(file, opts)
-      .then((res) => {
-        console.log(`Successfully converted file`);
-        sender.send('convertpdf:input.file.success');
-      })
-      .catch((error) => {
-        console.log(`Failed to convert with error: ${error.stack}`);
-        sender.send('convertpdf:input.file.failure', error);
-      });
+    execute = pdfGhostscript;
+  } else if (opts.action === 'pdfmetaremove' || opts.action === 'pdfmetaclone') {
+    execute = exiftool;
   } else {
-    pdfPoppler.convert(file, opts)
-      .then((res) => {
-        console.log(`Successfully converted file`);
-        sender.send('convertpdf:input.file.success');
-      })
-      .catch((error) => {
-        console.log(`Failed to convert with error: ${error.stack}`);
-        sender.send('convertpdf:input.file.failure', error);
-      });
+    execute = pdfPoppler;
   }
-  return;
 
+  return execute;
 }
 
 /*
@@ -363,238 +367,205 @@ function convertPdf(file, event, isMassFileConvert = false) {
     Get options from conversion type
  */
 function getOptions() {
-  var options;
-  switch (mainOptions.conversionType) {
-    /*
-      PDF 2 JPEG
-     */
-    case 'pdf2jpeglow':
-      options = {
-        format: 'jpeg',
-        scaleTo: '2000'
-      };
-      break;
-    case 'pdf2jpegmedium':
-      options = {
-        format: 'jpeg',
-        scaleTo: '4000'
-      };
-      break;
-    case 'pdf2jpeghigh':
-      options = {
-        format: 'jpeg',
-        scaleTo: '8000'
-      };
-      break;
+  var options,
+    conversionMap = getConversionMap(),
+    conversionType = mainOptions.conversionType;
 
-      /*
-        PDF 2 PNG
-       */
-    case 'pdf2pnglow':
-      options = {
-        format: 'png',
-        scaleTo: '2000'
-      };
-      break;
-    case 'pdf2pngmedium':
-      options = {
-        format: 'png',
-        scaleTo: '4000'
-      };
-      break;
-    case 'pdf2pnghigh':
-      options = {
-        format: 'png',
-        scaleTo: '8000'
-      };
-      break;
+  if (conversionType in conversionMap)
+    options = conversionMap[conversionType];
 
-      /*
-       PDF 2 SVG
-       */
-    case 'pdf2svg':
-      options = {
-        format: 'svg'
-      };
-      break;
-
-      /*
-        PDF 2 TIFF
-       */
-    case 'pdf2tifflow':
-      options = {
-        format: 'tiff',
-        scaleTo: '2000'
-      };
-      break;
-    case 'pdf2tiffmedium':
-      options = {
-        format: 'tiff',
-        scaleTo: '4000'
-      };
-      break;
-    case 'pdf2tiffhigh':
-      options = {
-        format: 'tiff',
-        scaleTo: '8000'
-      };
-      break;
-
-      /*
-        PDF 2 PPM
-       */
-    case 'pdf2ppmlow':
-      options = {
-        format: 'ppm'
-      };
-      break;
-    case 'pdf2ppmmedium':
-      options = {
-        format: 'ppm',
-        scaleTo: '4000'
-      };
-      break;
-    case 'pdf2ppmhigh':
-      options = {
-        format: 'ppm',
-        scaleTo: '8000'
-      };
-      break;
-
-
-      /*
-        PDF COMPRESS
-       */
-    case 'pdf2pdflow':
-      options = {
-        format: 'pdf',
-        pdfSettings: 'screen'
-      };
-      break;
-    case 'pdf2pdfmedium':
-      options = {
-        format: 'pdf',
-        pdfSettings: 'ebook'
-      };
-      break;
-    case 'pdf2pdfhigh':
-      options = {
-        format: 'pdf',
-        pdfSettings: 'printer'
-      };
-      break;
-
-      /*
-        PDF SPLIT
-       */
-    case 'pdf2split':
-      options = {
-        format: 'separate'
-      };
-      break;
-
-      /*
-        PDF EXTRACT
-       */
-    case 'pdf2extract':
-      options = {
-        format: 'extract'
-      };
-      break;
-
-      /*
-        PDF DETACH
-       */
-    case 'pdf2detach':
-      options = {
-        format: 'detach'
-      };
-      break;
-
-      /*
-        PDF REMOVE META
-       */
-    case 'pdfmetaremove':
-      options = {
-        action: 'pdfmetaremove'
-      };
-      break;
-
-      /*
-        PDF CLONE META
-       */
-    case 'pdfmetaclone':
-      options = {
-        action: 'pdfmetaclone'
-      };
-      break;
-
-      /*
-        PDF 2 TXT
-       */
-    case 'pdf2txt':
-      options = {
-        format: 'txt'
-      };
-      break;
-
-      /*
-        PDF 2 PDFA
-       */
-    case 'pdf2pdfa':
-      options = {
-        format: 'pdfa'
-      };
-      break;
-    case 'pdf2pdfalow':
-      options = {
-        pdfSettings: 'screen',
-        format: 'pdfa'
-      };
-      break;
-    case 'pdf2pdfamedium':
-      options = {
-        pdfSettings: 'ebook',
-        format: 'pdfa'
-      };
-      break;
-    case 'pdf2pdfahigh':
-      options = {
-        pdfSettings: 'printer',
-        format: 'pdfa'
-      };
-      break;
-
-      /*
-        PDF STAMP
-       */
-    case 'pdfstamp1':
-      options = {
-        format: 'pdf',
-        action: 'stamp',
-        type: '1'
-      };
-      break;
-
-      /*
-        DOC 2 PDF
-       */
-    case 'doc2pdf':
-      options = {
-        format: 'pdf',
-        action: 'doc2pdf',
-        type: '1'
-      }
-      break;
-
-      /*
-        IMG TO GRAYSCALE
-       */
-    case 'grayscalepic':
-      options = {
-        action: 'grayscale'
-      }
-  }
+  if (mainOptions.hasOwnProperty('inputFile'))
+    options = {
+      ...options,
+      inputFile: mainOptions.inputFile
+    };
 
   return options;
+}
+
+/*
+  getConversionMap
+    Gets the current conversion map
+ */
+function getConversionMap() {
+  var conversionMap = {
+    /*
+      PDF to JPEG
+    */
+    pdf2jpeglow: {
+      format: 'jpeg',
+      scaleTo: '2000'
+    },
+    pdf2jpegmedium: {
+      format: 'jpeg',
+      scaleTo: '4000'
+    },
+    pdf2jpeghigh: {
+      format: 'jpeg',
+      scaleTo: '8000'
+    },
+
+    /*
+      PDF to PNG
+     */
+    pdf2pnglow: {
+      format: 'png',
+      scaleTo: '2000'
+    },
+    pdf2pngmedium: {
+      format: 'png',
+      scaleTo: '4000'
+    },
+    pdf2pnghigh: {
+      format: 'png',
+      scaleTo: '8000'
+    },
+
+    /*
+      PDF to SVG
+     */
+    pdf2svg: {
+      format: 'svg'
+    },
+
+    /*
+    PDF to TIFF
+     */
+    pdf2tifflow: {
+      format: 'tiff',
+      scaleTo: '2000'
+    },
+    pdf2tiffmedium: {
+      format: 'tiff',
+      scaleTo: '4000'
+    },
+    pdf2tiffhigh: {
+      format: 'tiff',
+      scaleTo: '8000'
+    },
+
+    /*
+      PDF to PPM
+     */
+    pdf2ppmlow: {
+      format: 'ppm',
+      scaleTo: '2000'
+    },
+    pdf2ppmmedium: {
+      format: 'ppm',
+      scaleTo: '4000'
+    },
+    pdf2ppmhigh: {
+      format: 'ppm',
+      scaleTo: '8000'
+    },
+
+    /*
+      PDF Compression
+     */
+    pdf2pdflow: {
+      format: 'pdf',
+      pdfSettings: 'screen'
+    },
+    pdf2pdfmedium: {
+      format: 'pdf',
+      pdfSettings: 'ebook'
+    },
+    pdf2pdfhigh: {
+      format: 'pdf',
+      pdfSettings: 'printer'
+    },
+
+    /*
+      PDF splitting
+     */
+    pdf2split: {
+      format: 'separate'
+    },
+
+    /*
+      PDF extraction
+     */
+    pdf2extract: {
+      format: 'extract'
+    },
+
+    /*
+      PDF detach
+     */
+    pdf2detach: {
+      format: 'detach'
+    },
+
+    /*
+      PDF remove metadata
+     */
+    pdfmetaremove: {
+      action: 'pdfmetaremove'
+    },
+
+    /*
+      PDF clone metadata
+     */
+    pdfmetaclone: {
+      action: 'pdfmetaclone'
+    },
+
+    /*
+      PDF to Text
+     */
+    pdf2txt: {
+      format: 'txt'
+    },
+
+    /*
+      PDF to PDFA
+     */
+    pdf2pdfa: {
+      format: 'pdfa'
+    },
+
+    /*
+      PDF to PDFA + compression
+     */
+    pdf2pdfalow: {
+      pdfSettings: 'screen',
+      format: 'pdfa'
+    },
+    pdf2pdfamedium: {
+      pdfSettings: 'ebook',
+      format: 'pdfa'
+    },
+    pdf2pdfahigh: {
+      pdfSettings: 'printer',
+      format: 'pdfa'
+    },
+
+    /*
+      PDF custom stamping
+     */
+    pdfstamp1: {
+      format: 'pdf',
+      action: 'stamp',
+      type: '1'
+    },
+
+    /*
+      Document to PDF
+     */
+    doc2pdf: {
+      format: 'pdf',
+      action: 'doc2pdf',
+      type: '1'
+    },
+
+    /*
+      Image to grayscale
+     */
+    grayscalepic: {
+      action: 'grayscale'
+    }
+  }
+
+  return conversionMap;
 }
